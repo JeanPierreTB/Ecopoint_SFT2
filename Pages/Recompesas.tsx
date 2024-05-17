@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { View, Text,Image,StyleSheet,ScrollView } from 'react-native';
 import { RecompensasProps } from '../Types/types';
 import CajaObjetivo from '../Componentes/CajaObjetivo';
-import Objetivo from '../Clases/Objetivo';
-import Recompesa from '../Clases/Recompesa';
 import { objetivos } from '../data/Objetivos';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 

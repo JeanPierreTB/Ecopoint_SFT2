@@ -3,11 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View ,Image} from 'react-native';
 import * as MediaLibrary from 'expo-media-library'
 import Boton from '../Componentes/Boton';
-import Usuario from '../Clases/Usuario';
+import Usuario from '../Clases/Usuario/Usuario';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../Types/types";
-import PuntodeReciclaje from '../Clases/PuntodeReciclaje';
+import PuntodeReciclaje from '../Clases/Puntodereciclaje/PuntodeReciclaje';
 
 
 type FotoProps = {
@@ -65,23 +65,7 @@ const tomarfoto = async () => {
     return <Text>No hay acceso a la camara</Text>
   }
 
-  const handleBarCodeScanned = async ({ type, data }: { type: string; data: string }) => {
-    if (!escaneoRealizado) { // Verificar si ya se ha realizado un escaneo
-      alert(`Código ${type} escaneado: ${data}`);
-      setEscaneoRealizado(true);
-      const parsedData=JSON.parse(data);
-      const lugarseleccionado = await AsyncStorage.getItem('recorridoData');
-      const lugarseleccionadodata = lugarseleccionado? JSON.parse(lugarseleccionado):null;
-      const usuario = await AsyncStorage.getItem('usuario');
-      const usuarioObjeto = usuario? JSON.parse(usuario):null;
-      const punto=new PuntodeReciclaje(undefined,parsedData.latitud,parsedData.longitud,parsedData.lugar,parsedData.tipo);
-      const res=await punto.puntorealizadoqr(lugarseleccionadodata.puntoqr,lugarseleccionadodata.cantidad,usuarioObjeto);
-      alert(res.mensaje);
-
-      navigation.navigate("principal")
-
-    }
-  };
+  
 
 
   return (
@@ -91,7 +75,7 @@ const tomarfoto = async () => {
       style={styles.camera}
       type={type}
       ref={cameraRef}
-      onBarCodeScanned={handleBarCodeScanned}
+      
     >
     <Text>Hello</Text>
     </Camera>

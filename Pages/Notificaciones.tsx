@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView,Image } from "react-native";
 import CajaNotificacion from "../Componentes/CajaNotificacion";
-import Notifiacion from "../Clases/Notifiacion";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Notificaciones() {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View,Image,StyleSheet,Text, TouchableOpacity } from 'react-native'
 import Icon from "react-native-vector-icons/FontAwesome";
-import Usuario from '../Clases/Usuario';
+import Usuario from '../Clases/Usuario/Usuario';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 

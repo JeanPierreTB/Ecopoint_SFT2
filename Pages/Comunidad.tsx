@@ -11,10 +11,11 @@ import { ComunidadProps } from "../Types/types";
 import CajaComunidad from "../Componentes/CajaComunidad";
 import { useEffect, useState, useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Comentario from "../Clases/Comentario";
+import Comentario from "../Clases/Comentario/Comentario";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Picker } from "@react-native-picker/picker";
-import Usuario from "../Clases/Usuario";
+import Usuario from "../Clases/Usuario/Usuario";
+import ComentarioFactory from "../Clases/Comentario/ComentarioFactory";
 
 const opciones = [
   {
@@ -84,7 +85,7 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
       const usuario = await AsyncStorage.getItem("usuario");
       const usuariobjeto = usuario ? JSON.parse(usuario) : null;
       console.log(texto);
-      const coment = new Comentario(texto, parseInt(selectedOption));
+      const coment=ComentarioFactory.crearComentario(texto,parseInt(selectedOption));
       await coment.agregarcomentario(usuariobjeto); 
       await mostrarcomentario(); 
       textInputRef.current?.clear();

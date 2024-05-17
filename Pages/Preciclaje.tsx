@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
-import PuntodeReciclaje from '../Clases/PuntodeReciclaje';
+import PuntodeReciclaje from '../Clases/Puntodereciclaje/PuntodeReciclaje';
 
 
 type PreciclajeProps = {

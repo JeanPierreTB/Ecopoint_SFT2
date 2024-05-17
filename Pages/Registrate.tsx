@@ -5,10 +5,14 @@ import google from '../assets/google.png'
 import ios from '../assets/ios.png'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
-import Usuario from '../Clases/Usuario';
+import Usuario from '../Clases/Usuario/Usuario';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import PasswordVerificationStrategy from '../Clases/Validador/PasswordVerificationStrategy'
+import Validador from '../Clases/Validador/Validador'
+import RegistroNormal from '../Clases/RegisterStratery/RegistroNormal'
+import RegistroGoogle from '../Clases/RegisterStratery/RegistroGoogle'
 
 
 WebBrowser.maybeCompleteAuthSession();
@@ -37,10 +41,7 @@ export default function Registrate({ navigation }: RegistrateProps) {
     console.log("info del user:" + (user?.email || 'Usuario no encontrado'));
     if (response?.type === "success") {
       const userInfoResponse = await getUserInfo(response.authentication?.accessToken);
-      /*setUserInfo(userInfoResponse);
-      // Enviar información del usuario al servidor
-      console.log("Informacion a "+userInfoResponse.password)
-      sendUserDataToServer(userInfoResponse.email, userInfoResponse.password);*/
+      
     }
   }
 
@@ -59,7 +60,7 @@ export default function Registrate({ navigation }: RegistrateProps) {
       });
 
       const user = await response.json();
-      console.log("Respuesta de la API de Google:", user); // Imprimir la respuesta completa
+      console.log("Respuesta de la API de Google:", user); 
       
       almacenarusuario(user);
     } catch (e) {
@@ -68,57 +69,45 @@ export default function Registrate({ navigation }: RegistrateProps) {
   }
 
   const almacenarusuario=async(user:any)=>{
-    const usuario=new Usuario(user.email,"",null,null);
+    const usuario=new Usuario(user.email,"");
     const respuesta=await usuario.verifiyaccount();
     if(respuesta){
         usuario.islogin(navigation);
     }else{
-        usuario.register(navigation);
+        const registroGoogle=new RegistroGoogle();
+        usuario.register(navigation,registroGoogle);
         usuario.islogin(navigation);
     }
     
   }
 
 
-  const handleclik=async ()=>{
-    const dniRegex = /^\d{8}$/;
-    const emailRegex = /\S+@\S+\.\S+/;
-    const passwordRegex = /.{8,}/;
-    const phoneRegex = /^\d{9}$/;
-
-    // Verificar si algún campo está vacío
+  const handleclik = async () => {
     if (!DNI || !Correo || !Contra || !NTelefono) {
         Alert.alert('Error', 'Completa todos los campos');
-    } else if (!dniRegex.test(DNI) || !emailRegex.test(Correo) || !passwordRegex.test(Contra) || !phoneRegex.test(NTelefono)) {
-        Alert.alert('Error', 'Completa los campos correctamente');
-    }   
-    else{
-        console.log(NTelefono);
-        const usuario=new Usuario(Correo,Contra,parseInt(DNI),parseInt(NTelefono));
-        const respuesta=await usuario.verifiyaccount();
-        if(!respuesta){
-            const response=await usuario.register(navigation);
-            setDNI('');
-            setCorreo('');
-            setContra('');
-            setNTelefono('');
-            console.log(response);
-            if(!response){
-                navigation.navigate('sesion');
-            }
+    } else {
 
-        }else{
-            Alert.alert('Error','El usuario se encuentra registrado');
-            setDNI('');
-            setCorreo('');
-            setContra('');
-            setNTelefono('');
+        const usuario = new Usuario(Correo, Contra, parseInt(DNI), parseInt(NTelefono));
+        const respuesta = await usuario.verifiyaccount();
+
+        if (!respuesta) {
+            const registroNormal=new RegistroNormal();
+            const response = await usuario.register(navigation,registroNormal);
+
+
+            if (response) navigation.navigate('sesion');
+            else if(!response) return ;
+        } else {
+            Alert.alert('Error', 'El usuario se encuentra registrado');
+            
         }
-        
+        setDNI('');
+        setCorreo('');
+        setContra('');
+        setNTelefono('');
     }
-    
+}
 
-  }
 
 
   return (

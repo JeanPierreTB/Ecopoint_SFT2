@@ -6,12 +6,13 @@ import ios from '../assets/ios.png'
 import { TextInput } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
-import Usuario from "../Clases/Usuario";
+import Usuario from "../Clases/Usuario/Usuario";
 import { objetivos } from '../data/Objetivos'
-import Objetivo from '../Clases/Objetivo'
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import RegistroGoogle from '../Clases/RegisterStratery/RegistroGoogle';
+
 
 
 
@@ -30,17 +31,7 @@ const Iniciodesesion: React.FC<IniciodesesionProps> = ({ navigation }) => {
 
  
 
-  const poblarobjetivos=async ()=>{
-    
-
-  for (let i = 0; i < objetivos.length; i++) {
-    let ob1 = new Objetivo(objetivos[i].des, objetivos[i].puntos, objetivos[i].dia);
-    let res = await ob1.agregarobjetivo();
-    if (!res) {
-      break; // Terminar el bucle si no se puede agregar el objetivo
-    }
-  }
-  }
+  
 
   React.useEffect(() => {
     handleSignInWithGoogle();
@@ -51,10 +42,6 @@ const Iniciodesesion: React.FC<IniciodesesionProps> = ({ navigation }) => {
     console.log("info del user:" + (user?.email || 'Usuario no encontrado'));
     if (response?.type === "success") {
       const userInfoResponse = await getUserInfo(response.authentication?.accessToken);
-      /*setUserInfo(userInfoResponse);
-      // Enviar información del usuario al servidor
-      console.log("Informacion a "+userInfoResponse.password)
-      sendUserDataToServer(userInfoResponse.email, userInfoResponse.password);*/
     }
   }
 
@@ -85,14 +72,13 @@ const Iniciodesesion: React.FC<IniciodesesionProps> = ({ navigation }) => {
   }
 
   const almacenarusuario=async(user:any)=>{
-    const usuario=new Usuario(user.email,"",null,null);
+    const usuario=new Usuario(user.email,"");
     const respuesta=await usuario.verifiyaccount();
     if(respuesta){
-        console.log("Deberia entrar aqui");
         usuario.islogin(navigation);
     }else{
-        console.log("No deberia entrar aqui");
-        usuario.register(navigation);
+        const registroGoogle=new RegistroGoogle();
+        usuario.register(navigation,registroGoogle);
         usuario.islogin(navigation);
     }
     

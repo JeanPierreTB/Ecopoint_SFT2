@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { View ,Image,Text,StyleSheet,TouchableOpacity} from 'react-native'
 import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import Usuario from '../Clases/Usuario';
+import Usuario from '../Clases/Usuario/Usuario';
 import Notifiacion from '../Clases/Notifiacion';
-import Comentario from '../Clases/Comentario';
+import Comentario from '../Clases/Comentario/Comentario';
 
 
 

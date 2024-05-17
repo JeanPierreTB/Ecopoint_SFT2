@@ -3,8 +3,10 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView 
 import { useFocusEffect } from '@react-navigation/native'; // Importa useFocusEffect
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../Types/types";
-import Usuario from '../Clases/Usuario';
+import Usuario from '../Clases/Usuario/Usuario';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import GoogleVerificationStrategy from '../Clases/ActualizarDatos/GoogleVerificationStrategy';
+import LocalVerificationStrategy from '../Clases/ActualizarDatos/LocalVerificationStrategy';
 
 type CuentaProps = {
   navigation: StackNavigationProp<RootStackParamList, "cuenta">;
@@ -16,7 +18,6 @@ function Cuenta({ navigation }: CuentaProps) {
   const [DNI, setDNI] = useState('');
   const [Contrasena, setContrasena] = useState('');
 
-  // Esta función maneja la recarga de la pantalla cada vez que recibe foco
   useFocusEffect(
     React.useCallback(() => {
       datosusuario();
@@ -31,7 +32,7 @@ function Cuenta({ navigation }: CuentaProps) {
     const usuarioid = await AsyncStorage.getItem('usuario');
     const usuarioObjeto = usuarioid ? JSON.parse(usuarioid) : null;
     const data = await Usuario.datosusuario(usuarioObjeto);
-    console.log("data final:"+data);
+    
     setNombre(data.nombre);
     if (data.ntelefono !== null && data.dni !== null) {
       if(data.contrasena===""){
@@ -45,7 +46,6 @@ function Cuenta({ navigation }: CuentaProps) {
       
     }
     else {
-      console.log("Entro mal");
       setTelefono("No definido");
       setDNI("No definido");
       setContrasena("Indefinido");
@@ -54,7 +54,6 @@ function Cuenta({ navigation }: CuentaProps) {
   }
 
   const handleclik = async () => {
-    console.log('Hola');
     const campos = [Nombre, Telefono, DNI, Contrasena];
     if (campos.some(campo => !campo)) {
       Alert.alert('Error', 'Completa todos los campos');
@@ -62,38 +61,27 @@ function Cuenta({ navigation }: CuentaProps) {
     else {
       const usuarioid = await AsyncStorage.getItem('usuario');
       const usuarioObjeto = usuarioid ? JSON.parse(usuarioid) : null;
-      let usuario;
-      const dniRegex = /^\d{8}$/;
-      const phoneRegex = /^\d{9}$/;
-      const emailRegex = /\S+@\S+\.\S+/;
-      const passwordRegex = /.{8,}/;
+      const usuario=new Usuario(Nombre,Contrasena,parseInt(DNI),parseInt(Telefono));
+      let respuesta;
+      
       if (Contrasena === "Indefinido") {
-        if(dniRegex.test(DNI) && phoneRegex.test(Telefono)){
-          usuario = new Usuario(Nombre, "", parseInt(DNI), parseInt(Telefono));
-        }
-        else{
-          alert("Ponga los datos correctamente");
-          return
-        }
+        const googleVerificationStrategy=new GoogleVerificationStrategy();
+        respuesta=await usuario.actualizadatos(usuarioObjeto,googleVerificationStrategy);
+        
+
       }
       else {
-        if(emailRegex.test(Nombre) && dniRegex.test(DNI) && phoneRegex.test(Telefono) && passwordRegex.test(Contrasena)){
-          usuario = new Usuario(Nombre, Contrasena, parseInt(DNI), parseInt(Telefono));
-
-        }
-        else{
-          alert("Ponga los datos correctamente");
-          return;
-        }
+        const localVerificationStrategy=new LocalVerificationStrategy();
+        respuesta=await usuario.actualizadatos(usuarioObjeto,localVerificationStrategy);
         
       }
-      const respuesta = await usuario.actualizadatos(usuarioObjeto);
+
       if (respuesta.res) {
         Alert.alert('Exito', 'Campos actualizados');
         navigation.navigate("perfil");
 
       } else {
-        Alert.alert('Error', 'Error,intentelo mas tarde')
+        return;
       }
 
 

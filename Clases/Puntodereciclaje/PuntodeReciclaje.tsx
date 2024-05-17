@@ -70,7 +70,6 @@ class PuntodeReciclaje{
                 {
                   text: 'OK',
                   onPress: () => {
-                    // Usa reset para cargar la pantalla Principal desde cero
                     navigation.reset({
                       index: 0,
                       routes: [{ name: 'principal' }],
@@ -104,73 +103,13 @@ class PuntodeReciclaje{
             })
           const data = await response.json();
       
-          return data.puntos || []; // Devolver los puntos o un array vacío si no hay puntos
+          return data.puntos || []; 
       
         } catch (e) {
           console.error("Ocurrió un error", e);
           return [];
         }
       }
-
-      static async puntorealizado(punto: string,id:number): Promise<response> {
-        try {
-            const response = await fetch("http://192.168.0.179:3001/punto-cancelado", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    lugar: punto,
-                    id:id
-                }),
-            });
-    
-            const data = await response.json();
-    
-            return {
-                mensaje: data.mensaje || "Mensaje predeterminado",
-                res: data.res || false,
-                punto: data.punto || null
-            };
-    
-        } catch (e) {
-            console.error("Ocurrió un error", e);
-            return {
-                mensaje: "Ocurrió un error",
-                res: false,
-                punto: null
-            };
-        }
-    }
-
-    async puntorealizadoqr(lugarseleccionado:string,cantidad:number,id:number):Promise<any>{
-      try{
-        const response=await fetch('http://192.168.0.179:3001/punto-cancelado-qr',{
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              lugarseleccionado:lugarseleccionado,
-              latitud:this.latitud,
-              longitud:this.longitud,
-              lugar:this.lugar,
-              tipo:this.tipo,
-              cantidad:cantidad,
-              id:id
-          }),
-        })
-
-        const data=await response.json();
-        console.log(data);
-        return data;
-      }catch(e){
-        console.log("Ocurrio un error",e)
-      }
-      
-    }
-    
-      
 
 
     getlugar():string{

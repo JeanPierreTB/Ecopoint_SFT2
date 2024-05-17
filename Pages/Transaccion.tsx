@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text,Image, TouchableOpacity, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { TransaccionProps } from '../Types/types';
-import PuntodeReciclaje from '../Clases/PuntodeReciclaje';
+import PuntodeReciclaje from '../Clases/Puntodereciclaje/PuntodeReciclaje';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from "@react-navigation/native";
-import Usuario from '../Clases/Usuario';
+import Usuario from '../Clases/Usuario/Usuario';
 
 
 

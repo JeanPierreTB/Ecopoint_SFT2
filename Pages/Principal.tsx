@@ -3,8 +3,8 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from "reac
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { useNavigation ,useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import PuntodeReciclaje from "../Clases/PuntodeReciclaje";
-import Usuario from "../Clases/Usuario";
+import PuntodeReciclaje from "../Clases/Puntodereciclaje/PuntodeReciclaje";
+import Usuario from "../Clases/Usuario/Usuario";
 import { Dimensions } from "react-native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';

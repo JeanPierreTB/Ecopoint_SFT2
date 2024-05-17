@@ -5,7 +5,7 @@ import Cajaestadistica from "../Componentes/Cajaestadistica";
 import BarraInferior from "../Componentes/BarraInferior";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../Types/types";
-import Usuario from "../Clases/Usuario";
+import Usuario from "../Clases/Usuario/Usuario";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from "@react-navigation/native";
 

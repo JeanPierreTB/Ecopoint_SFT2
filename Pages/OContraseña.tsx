@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { TextInput } from 'react-native'
 import { Text, View,TouchableOpacity ,StyleSheet,Alert} from 'react-native'
-import Usuario from "../Clases/Usuario"
+import Usuario from "../Clases/Usuario/Usuario"
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
 
@@ -15,13 +15,11 @@ const OContraseña: React.FC<OContraProps> = ({ navigation }) => {
   const [password,setpassword]=useState('');
 
   const handleclik = () => {
-    const passwordRegex = /.{8,}/;
+    
 
     if (!password && !email) {
         Alert.alert('Error', 'Completa todos los campos');
-    } else if (!passwordRegex.test(password)) {
-        Alert.alert('Error', 'La contraseña debe tener al menos 8 caracteres');
-    }
+    } 
     else{
         const usuario=new Usuario(email,password);
         usuario.changepassword(password,navigation);
