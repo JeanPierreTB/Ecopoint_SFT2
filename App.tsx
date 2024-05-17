@@ -9,16 +9,13 @@ import Principal from './Pages/Principal';
 import BarraInferior from './Componentes/BarraInferior';
 import Perfil from './Pages/Perfil';
 import Cuenta from './Pages/Cuenta';
-import Soporte from './Pages/Soporte';
-import PFrecuentes from './Pages/PFrecuentes';
-import Ecomentarios from './Pages/Ecomentarios';
+import Ranking from './Pages/Ranking';
 import OContraseña from './Pages/OContraseña';
 import Preciclaje from './Pages/Preciclaje';
 import Foto from './Pages/Foto';
 import AgregarAmigos from './Pages/AgregarAmigos';
 import Misamigos from './Pages/Misamigos';
 import Notificaciones from './Pages/Notificaciones';
-import Chatpersonal from './Pages/Chatpersonal';
 
 
 
@@ -134,15 +131,11 @@ const CargaInicial: React.FC<{ navigation: any }> = ({ navigation }) => {
           options={{headerShown:false}}
         />
 
-        <Stack.Screen
-          name="chatpersonal"
-          component={Chatpersonal}
-          options={{headerShown:false}}
-        />
+        
 
         <Stack.Screen
-          name="soporte"
-          component={Soporte}
+          name="Ranking"
+          component={Ranking}
           options={{
             headerTitle: '',
             headerStyle: {
@@ -152,29 +145,9 @@ const CargaInicial: React.FC<{ navigation: any }> = ({ navigation }) => {
           }}
         />
 
-        <Stack.Screen
-          name="pregunta"
-          component={PFrecuentes}
-          options={{
-            headerTitle: '',
-            headerStyle: {
-              backgroundColor: 'rgba(0,0,0,0)',
-              borderBottomWidth: 0,
-            },
-          }}
-        />
+        
 
-        <Stack.Screen
-          name="enviar"
-          component={Ecomentarios}
-          options={{
-            headerTitle: '',
-            headerStyle: {
-              backgroundColor: 'rgba(0,0,0,0)',
-              borderBottomWidth: 0,
-            },
-          }}
-        />
+        
 
         <Stack.Screen
           name="ocontra"

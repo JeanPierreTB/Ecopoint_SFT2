@@ -1,18 +1,16 @@
-// Recompesas.tsx
 import React, { useEffect, useState } from 'react';
-import { View, Text,Image,StyleSheet,ScrollView } from 'react-native';
-import { RecompensasProps } from '../Types/types';
-import CajaObjetivo from '../Componentes/CajaObjetivo';
-import Objetivo from '../Clases/Objetivo';
-import Recompesa from '../Clases/Recompesa';
-import { objetivos } from '../data/Objetivos';
+import { View, StyleSheet, Text,Image, TouchableOpacity, TextInput } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import { TransaccionProps } from '../Types/types';
+import PuntodeReciclaje from '../Clases/PuntodeReciclaje';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useFocusEffect } from "@react-navigation/native";
+import Usuario from '../Clases/Usuario';
 
 
-const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
+
+const Transaccion: React.FC<any> = ({ navigation }: TransaccionProps) => {
   
-  
-
 
   return (
     <View style={styles.container}>
@@ -23,15 +21,15 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
               }}
             />
       <View style={styles.container2}>
-      <Text style={styles.texto}>Muy pronto Recompesas...</Text>
+      <Text style={styles.texto}>Muy pronto Transaccion...</Text>
     </View>       
       
       
     </View>
   );
-}
+};
 
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
   container:{
     flex:1,
     flexDirection:'row',
@@ -49,10 +47,8 @@ const styles=StyleSheet.create({
     width:100,
     height:100
   },container2:{
-    width:'60%'
+    width:'50%'
   }
-})
+});
 
-
-
-export default Recompesas;
+export default Transaccion;

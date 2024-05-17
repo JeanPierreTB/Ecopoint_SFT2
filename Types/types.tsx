@@ -9,10 +9,10 @@ export type RootStackParamList = {
     Consejos: undefined;
     Recompensas: undefined;
     Comunidad: undefined;
-    Recorrido: undefined;
+    Transaccion: undefined;
     perfil:undefined;
     cuenta:undefined;
-    soporte:undefined;
+    Ranking:undefined;
     pregunta:undefined;
     enviar:undefined;
     ocontra:undefined;
@@ -28,5 +28,5 @@ export type RootStackParamList = {
   export type ConsejosProps = StackScreenProps<RootStackParamList, 'Consejos'>;
   export type RecompensasProps = StackScreenProps<RootStackParamList, 'Recompensas'>;
   export type ComunidadProps = StackScreenProps<RootStackParamList, 'Comunidad'>;
-  export type RecorridoProps = StackScreenProps<RootStackParamList, 'Recorrido'>;
+  export type TransaccionProps = StackScreenProps<RootStackParamList, 'Transaccion'>;
   

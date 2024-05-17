@@ -17,7 +17,6 @@ type PerfilProps = {
 function Perfil({ navigation }: PerfilProps) {
 
   const[datos,setdatos]=useState<any>();  
-  const[info,setinfo]=useState<any>();
 
   useEffect(()=>{
     
@@ -31,12 +30,9 @@ function Perfil({ navigation }: PerfilProps) {
       const usuarioObjeto = usuario ? JSON.parse(usuario) : null;
       console.log(usuarioObjeto);
       const datosUsuario = await Usuario.datosusuario(usuarioObjeto);
-      AsyncStorage.setItem('datos', JSON.stringify(datosUsuario));
-      const infousuario=await Usuario.datosinformativos(usuarioObjeto);
-      console.log(infousuario);
+      
       setdatos(datosUsuario);
       
-      setinfo(infousuario);
     } catch (error) {
       console.error('Error al obtener datos:', error);
     }
@@ -86,12 +82,12 @@ function Perfil({ navigation }: PerfilProps) {
       <Text style={styles.textoe}>Estadisticas</Text>
       <View style={styles.estadis}>
         <View style={styles.filaEstadis}>
-          <Cajaestadistica namei="recycle" puntaje={info?.puntosreciclados} des="Puntos reciclados" />{/*puntos obtenidos */}
-          <Cajaestadistica namei="calendar" puntaje={info?.puntaje} des="Puntaje usuario" />{/*puntos reciclados */}
+          <Cajaestadistica namei="recycle" puntaje="-" des="Puntos reciclados" />{/*puntos obtenidos */}
+          <Cajaestadistica namei="calendar" puntaje="-" des="Puntaje usuario" />{/*puntos reciclados */}
         </View>
         <View style={styles.filaEstadis}>
-          <Cajaestadistica namei="star" puntaje={info?.recompesaobtenidas} des="Recompesas" />{/*ranking usuario */}
-          <Cajaestadistica namei="trophy" puntaje={info?.usuarios} des="Ranking" />{/*Recompesas obtendidas */}
+          <Cajaestadistica namei="star" puntaje="-" des="Recompesas" />{/*ranking usuario */}
+          <Cajaestadistica namei="trophy" puntaje="-" des="Ranking" />{/*Recompesas obtendidas */}
         </View>
       </View>
       <View style={styles.borde}></View>
@@ -102,7 +98,7 @@ function Perfil({ navigation }: PerfilProps) {
       </View>
       <View style={styles.texic}>
         <Icon name="star" size={30} color="black" />
-        <Text onPress={() => navigation.navigate("soporte")}>Ranking</Text>
+        <Text onPress={() => navigation.navigate("Ranking")}>Ranking</Text>
       </View>
       <View style={styles.texic}>
         <Icon name="sign-out" size={30} color="red" />

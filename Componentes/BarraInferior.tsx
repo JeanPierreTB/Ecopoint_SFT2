@@ -4,8 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import Consejos from '../Pages/Consejos';
 import Recompesas from '../Pages/Recompesas';
 import Comunidad from '../Pages/Comunidad';
-import Recorrido from '../Pages/Recorrido';
+import Recorrido from '../Pages/Transaccion';
 import Principal from '../Pages/Principal';
+import Transaccion from '../Pages/Transaccion';
 
 const Tab = createBottomTabNavigator();
 
@@ -58,7 +59,7 @@ function BarraInferior() {
       />
       <Tab.Screen
         name="Transaccion"
-        component={Recorrido}
+        component={Transaccion}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="ios-map-outline" size={size} color={color} />
