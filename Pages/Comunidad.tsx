@@ -11,11 +11,14 @@ import { ComunidadProps } from "../Types/types";
 import CajaComunidad from "../Componentes/CajaComunidad";
 import { useEffect, useState, useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Comentario from "../Clases/Comentario/Comentario";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Picker } from "@react-native-picker/picker";
 import Usuario from "../Clases/Usuario/Usuario";
-import ComentarioFactory from "../Clases/Comentario/ComentarioFactory";
+import AComentario from "../Clases/Comentario/AComentario";
+import CSoporteFactory from "../Clases/Comentario/CSoporteFactory";
+import IcomentarioFactory from "../Clases/Comentario/IComentarioFactory";
+import CComentarioFactory from "../Clases/Comentario/CComentarioFactory";
+import SComentarioFactory from "../Clases/Comentario/SComentarioFactory";
 
 const opciones = [
   {
@@ -55,7 +58,7 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
 
   const mostrarcomentario = async () => {
     try {
-      const allcoment = await Comentario.recuperarcomentarios();
+      const allcoment = await AComentario.recuperarComentarios();
       setcometarios(allcoment);
     } catch (e) {
       console.log("Ocurrio un error", e);
@@ -77,6 +80,23 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
     setSelectedOption(itemValue);
   };
 
+  const crearComentariosFabrica=(option:number,des:string):AComentario|null=>{
+    
+     switch(option){
+      case 1:
+        const csoportefactory=new CSoporteFactory();
+        return csoportefactory.crearComentario(des);
+      case 2:
+        const ccomentarioFactory=new CComentarioFactory();
+        return ccomentarioFactory.crearComentario(des);
+      case 3:
+        const scomentarioFactory=new SComentarioFactory;
+        return scomentarioFactory.crearComentario(des);
+
+     }
+     return null;
+  }
+
   const handleclik = async () => {
     try {
       if (selectedOption === "0") {
@@ -85,8 +105,8 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
       const usuario = await AsyncStorage.getItem("usuario");
       const usuariobjeto = usuario ? JSON.parse(usuario) : null;
       console.log(texto);
-      const coment=ComentarioFactory.crearComentario(texto,parseInt(selectedOption));
-      await coment.agregarcomentario(usuariobjeto); 
+      const comentario=crearComentariosFabrica(parseInt(selectedOption),texto);
+      await comentario?.agregarComentario(usuariobjeto); 
       await mostrarcomentario(); 
       textInputRef.current?.clear();
       alert("Comentario agregado");

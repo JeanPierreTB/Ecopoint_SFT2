@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from "reac
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { useNavigation ,useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import PuntodeReciclaje from "../Clases/Puntodereciclaje/PuntodeReciclaje";
 import Usuario from "../Clases/Usuario/Usuario";
 import { Dimensions } from "react-native";
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -11,6 +10,7 @@ import { RootStackParamList } from '../Types/types';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from "react-native-maps-directions";
 import { Picker } from '@react-native-picker/picker';
+import APuntodeReciclaje from "../Clases/Puntodereciclaje/APuntodeReciclaje";
 
 
 type PrincipalProps = {
@@ -33,7 +33,7 @@ export default function Principal({ navigation }: PrincipalProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allPoints = await PuntodeReciclaje.visualizarpuntos();
+        const allPoints = await APuntodeReciclaje.visualizarpuntos();
         setPuntosRec(allPoints);
       } catch (error) {
         console.log("Ocurrió un error ", error);
@@ -45,7 +45,7 @@ export default function Principal({ navigation }: PrincipalProps) {
         const usuario = await AsyncStorage.getItem('usuario');
         const usuarioObjeto = usuario ? JSON.parse(usuario) : null;
         const usuarioData = await Usuario.datosusuario(usuarioObjeto);
-        const puntosRealizar = await PuntodeReciclaje.obtenerpuntosarelizar(usuarioData.id);
+        const puntosRealizar = await APuntodeReciclaje.obtenerpuntosarelizar(usuarioData.id);
         setPuntosAr(puntosRealizar);
       } catch (e) {
         console.log("Ocurrió un error ", e);
@@ -99,7 +99,7 @@ export default function Principal({ navigation }: PrincipalProps) {
     
   }, [isFocused,selectedCategory]);
 
-  const handlePunto = async (punto: PuntodeReciclaje) => {
+  const handlePunto = async (punto: APuntodeReciclaje) => {
     try {
       await AsyncStorage.setItem("punto", JSON.stringify(punto));
       navigation.navigate("Preciclaje");

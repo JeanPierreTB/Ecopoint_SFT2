@@ -5,7 +5,12 @@ import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
-import PuntodeReciclaje from '../Clases/Puntodereciclaje/PuntodeReciclaje';
+import PRPapelFactory from '../Clases/Puntodereciclaje/PRPapelFactory';
+import APuntodeReciclaje from '../Clases/Puntodereciclaje/APuntodeReciclaje';
+import PRPlasticoFactory from '../Clases/Puntodereciclaje/PRPlasticoFactory';
+import PRMetalFactory from '../Clases/Puntodereciclaje/PRMetalFactory';
+import PRBateriasFactory from '../Clases/Puntodereciclaje/PRBateriasFactory';
+import PRRopaFactory from '../Clases/Puntodereciclaje/PRRopaFactory';
 
 
 type PreciclajeProps = {
@@ -14,7 +19,8 @@ type PreciclajeProps = {
 
 export default function Principal({navigation}:PreciclajeProps) {
 
-  const[punto,setpunto]=useState<PuntodeReciclaje|null>(null);
+  const[punto,setpunto]=useState<APuntodeReciclaje|null>(null);
+  const[tipo,settipo]=useState<string>("");
 
   React.useEffect(()=>{
     
@@ -22,23 +28,37 @@ export default function Principal({navigation}:PreciclajeProps) {
   },[]);
 
 
+  const crearpuntoderecilajefabrica=(tipo:string,punto:APuntodeReciclaje):APuntodeReciclaje|null=>{
+    console.log("id del punto:"+punto.id);
+    switch(tipo){
+      case "Papel":
+        const prPapelFactory=new PRPapelFactory();
+        return prPapelFactory.crearpuntoderecilaje(punto.id,punto.latitud,punto.longitud,punto.lugar);
+      case "Plástico":
+        const prPlasticoFactory=new PRPlasticoFactory();
+        return prPlasticoFactory.crearpuntoderecilaje(punto.id,punto.latitud,punto.longitud,punto.lugar);
+      case "Metal":
+        const prMetalFactory=new PRMetalFactory();
+        return prMetalFactory.crearpuntoderecilaje(punto.id,punto.latitud,punto.longitud,punto.lugar);
+      case "Baterias":
+        const prBateriasFactory=new PRBateriasFactory();
+        return prBateriasFactory.crearpuntoderecilaje(punto.id,punto.latitud,punto.longitud,punto.lugar);
+      case "Ropa":
+        const prRopaFactory=new PRRopaFactory();
+        return prRopaFactory.crearpuntoderecilaje(punto.id,punto.latitud,punto.longitud,punto.lugar)
+    }
+    return null;
+  }
+
   const recuperarpunto = async () => {
     try {
       const storePunto = await AsyncStorage.getItem('punto');
       if (storePunto) {
         const punto = JSON.parse(storePunto);
         console.log(punto);
-  
-        // Aquí creas una nueva instancia de PuntodeReciclaje con los valores recuperados
-        const nuevoPunto = new PuntodeReciclaje(
-          punto.id || 0,
-          punto.latitud || 0,
-          punto.longitud || 0,
-          punto.lugar || '',
-          punto.tipo || 0
-        );
-  
-        setpunto(nuevoPunto);
+        const puntoderecilaje=crearpuntoderecilajefabrica(punto.tipo,punto);
+        settipo(punto.tipo);
+        setpunto(puntoderecilaje);
       }
     } catch (e) {
       console.error('Error al recuperar el punto', e);
@@ -50,9 +70,10 @@ export default function Principal({navigation}:PreciclajeProps) {
     try{
         const usuario = await AsyncStorage.getItem('usuario');
         const usuarioObjeto = usuario? JSON.parse(usuario):null;
-        console.log("se dio click",usuarioObjeto,punto?.getid());
+        console.log("se dio click",usuarioObjeto,punto?.id);
+        
         punto?
-        PuntodeReciclaje.realizarpunto(usuarioObjeto,punto?.getid(),navigation):
+        punto.realizarpunto(usuarioObjeto,punto?.id,navigation):
         alert("Oucrrio un error")
     }catch(e){
         console.error('Error al recuperar el punto', e);
@@ -67,11 +88,11 @@ export default function Principal({navigation}:PreciclajeProps) {
         <View style={styles.container2}>
             <View>
                 <Text style={styles.texto}>Lugar</Text>
-                <TextInput style={styles.input} value={punto?.getlugar()} editable={false}/>
+                <TextInput style={styles.input} value={punto?.lugar} editable={false}/>
             </View>
             <View>
                 <Text style={styles.texto}>Tipo</Text>
-                <TextInput style={styles.input} value={String(punto?.gettipo())} editable={false}/>
+                <TextInput style={styles.input} value={tipo} editable={false}/>
 
 
             </View>
