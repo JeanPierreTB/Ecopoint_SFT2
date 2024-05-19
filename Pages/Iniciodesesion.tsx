@@ -12,6 +12,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RegistroGoogle from '../Clases/RegisterStratery/RegistroGoogle';
+import Registro from '../Clases/RegisterStratery/Registro'
 
 
 
@@ -77,7 +78,7 @@ const Iniciodesesion: React.FC<IniciodesesionProps> = ({ navigation }) => {
     if(respuesta){
         usuario.islogin(navigation);
     }else{
-        const registroGoogle=new RegistroGoogle();
+        const registroGoogle=new Registro(new RegistroGoogle());
         usuario.register(navigation,registroGoogle);
         usuario.islogin(navigation);
     }

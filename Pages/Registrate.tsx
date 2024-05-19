@@ -13,6 +13,7 @@ import PasswordVerificationStrategy from '../Clases/Validador/PasswordVerificati
 import Validador from '../Clases/Validador/Validador'
 import RegistroNormal from '../Clases/RegisterStratery/RegistroNormal'
 import RegistroGoogle from '../Clases/RegisterStratery/RegistroGoogle'
+import Registro from '../Clases/RegisterStratery/Registro'
 
 
 WebBrowser.maybeCompleteAuthSession();
@@ -31,6 +32,7 @@ export default function Registrate({ navigation }: RegistrateProps) {
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId: "74457487730-a5mueg90o0hkbf54m90kspn6tu1kg2c6.apps.googleusercontent.com"
   });
+  
 
   React.useEffect(() => {
     handleSignInWithGoogle();
@@ -74,7 +76,7 @@ export default function Registrate({ navigation }: RegistrateProps) {
     if(respuesta){
         usuario.islogin(navigation);
     }else{
-        const registroGoogle=new RegistroGoogle();
+        const registroGoogle=new Registro(new RegistroGoogle());
         usuario.register(navigation,registroGoogle);
         usuario.islogin(navigation);
     }
@@ -86,12 +88,12 @@ export default function Registrate({ navigation }: RegistrateProps) {
     if (!DNI || !Correo || !Contra || !NTelefono) {
         Alert.alert('Error', 'Completa todos los campos');
     } else {
-
         const usuario = new Usuario(Correo, Contra, parseInt(DNI), parseInt(NTelefono));
         const respuesta = await usuario.verifiyaccount();
 
         if (!respuesta) {
-            const registroNormal=new RegistroNormal();
+            const registroNormal=new Registro(new RegistroNormal());
+            
             const response = await usuario.register(navigation,registroNormal);
 
 

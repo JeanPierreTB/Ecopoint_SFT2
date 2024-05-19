@@ -7,6 +7,7 @@ import Usuario from '../Clases/Usuario/Usuario';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GoogleVerificationStrategy from '../Clases/ActualizarDatos/GoogleVerificationStrategy';
 import LocalVerificationStrategy from '../Clases/ActualizarDatos/LocalVerificationStrategy';
+import Update from '../Clases/ActualizarDatos/Update';
 
 type CuentaProps = {
   navigation: StackNavigationProp<RootStackParamList, "cuenta">;
@@ -63,16 +64,18 @@ function Cuenta({ navigation }: CuentaProps) {
       const usuarioObjeto = usuarioid ? JSON.parse(usuarioid) : null;
       const usuario=new Usuario(Nombre,Contrasena,parseInt(DNI),parseInt(Telefono));
       let respuesta;
+
+      const verificationStrategy=new Update(new GoogleVerificationStrategy());
       
       if (Contrasena === "Indefinido") {
-        const googleVerificationStrategy=new GoogleVerificationStrategy();
-        respuesta=await usuario.actualizadatos(usuarioObjeto,googleVerificationStrategy);
+        
+        respuesta=await usuario.actualizadatos(usuarioObjeto,verificationStrategy);
         
 
       }
       else {
-        const localVerificationStrategy=new LocalVerificationStrategy();
-        respuesta=await usuario.actualizadatos(usuarioObjeto,localVerificationStrategy);
+        verificationStrategy.setUpdateStraterty(new LocalVerificationStrategy() );
+        respuesta=await usuario.actualizadatos(usuarioObjeto,verificationStrategy);
         
       }
 

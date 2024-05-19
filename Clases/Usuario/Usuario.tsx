@@ -6,6 +6,8 @@ import DniVerificationStrategy from '../Validador/DniVerificationStrategy';
 import EmailVerificationStrategy from '../Validador/EmailVerificationStrategy';
 import PhoneVerificationStrategy from '../Validador/PhoneVerificationStrategy';
 import UpdateStraterty from '../ActualizarDatos/UpdateStraterty';
+import Registro from '../RegisterStratery/Registro';
+import Update from '../ActualizarDatos/Update';
 
 
 
@@ -143,8 +145,8 @@ class Usuario{
 
 
 
-    async register(navigation: any,registroStrategy: RegistroStrategy): Promise<boolean> {
-      if(registroStrategy.register(this)){
+    async register(navigation: any,registro:Registro): Promise<boolean> {
+      if(registro.register(this)){
         try {
           const response = await fetch("http://192.168.0.179:3001/insertar-usuario", {
                   method: 'POST',
@@ -223,8 +225,8 @@ class Usuario{
     return data
     }
 
-    async actualizadatos(id: number,updateStraterty:UpdateStraterty): Promise<any> {
-      if(updateStraterty.verify(this)){
+    async actualizadatos(id: number,update:Update): Promise<any> {
+      if(update.verify(this)){
         try {
           const response = await fetch("http://192.168.0.179:3001/actualizar-datos-usuario", {
             method: 'POST',

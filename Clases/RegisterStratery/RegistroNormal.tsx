@@ -5,19 +5,26 @@ import PasswordVerificationStrategy from "../Validador/PasswordVerificationStrat
 import DniVerificationStrategy from "../Validador/DniVerificationStrategy";
 import EmailVerificationStrategy from "../Validador/EmailVerificationStrategy";
 import PhoneVerificationStrategy from "../Validador/PhoneVerificationStrategy";
+import Validador from "../Validador/Validador";
+import RegistroStrategy from "./RegistroStrategy";
 
 class RegistroNormal implements RegistroStrategy {
     register(datos:Usuario):boolean {
-        const dniVerificationStrategy = new DniVerificationStrategy();
-        const emailVerificationStrategy = new EmailVerificationStrategy();
-        const passwordVerificationStrategy = new PasswordVerificationStrategy();
-        const phoneVerificationStrategy = new PhoneVerificationStrategy();
+        const verificationStrategy = new Validador(new DniVerificationStrategy());
+        const dnivalor=verificationStrategy.verify(datos.getDni()!.toString());
 
-        // Verifica cada campo utilizando su estrategia de verificación correspondiente
-        return(dniVerificationStrategy.verify(datos.getDni()!.toString()) &&
-            emailVerificationStrategy.verify(datos.getnombre()) &&
-            passwordVerificationStrategy.verify(datos.getcontraseña()) &&
-            phoneVerificationStrategy.verify(datos.getntelefono()!.toString())); 
+        verificationStrategy.setVerificationStrategy(new EmailVerificationStrategy());
+        const emailvalor=verificationStrategy.verify(datos.getnombre())
+
+        verificationStrategy.setVerificationStrategy(new PasswordVerificationStrategy);
+        const passwordvalor=verificationStrategy.verify(datos.getcontraseña())
+        
+        verificationStrategy.setVerificationStrategy(new PhoneVerificationStrategy());
+        const phonevalor=verificationStrategy.verify(datos.getntelefono()!.toString());
+
+        
+
+        return(dnivalor && emailvalor && passwordvalor && phonevalor); 
     }
 }
 
