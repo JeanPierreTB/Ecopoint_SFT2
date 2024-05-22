@@ -8,6 +8,7 @@ import PhoneVerificationStrategy from '../Validador/PhoneVerificationStrategy';
 import UpdateStraterty from '../ActualizarDatos/UpdateStraterty';
 import Registro from '../RegisterStratery/Registro';
 import Update from '../ActualizarDatos/Update';
+import { URL2 } from '../../URL/URL';
 
 
 
@@ -52,7 +53,8 @@ class Usuario{
 
     async islogin(navigation: any): Promise<void> {
       try {
-        const response = await fetch("http://192.168.0.179:3001/verificar-usuario", {
+        console.log("Entro aqui..")
+        const response = await fetch(`${URL2}verificar-usuario`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -87,7 +89,7 @@ class Usuario{
     }
 
     async verifiyaccount():Promise<boolean>{
-      const response = await fetch("http://192.168.0.179:3001/usuario-existente", {
+      const response = await fetch(`${URL2}usuario-existente`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -112,7 +114,7 @@ class Usuario{
       
       if(passwordVerificationStrategy.verify(contranueva)){
         console.log("Verificacion con la clase");
-        await fetch("http://192.168.0.179:3001/cambio_contra", {
+        await fetch(`${URL2}cambio_contra`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -148,7 +150,7 @@ class Usuario{
     async register(navigation: any,registro:Registro): Promise<boolean> {
       if(registro.register(this)){
         try {
-          const response = await fetch("http://192.168.0.179:3001/insertar-usuario", {
+          const response = await fetch(`${URL2}insertar-usuario`, {
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json',
@@ -189,7 +191,7 @@ class Usuario{
 
     static async datosusuario(id:number):Promise<any>{
       try{
-        const response = await fetch("http://192.168.0.179:3001/obtener-usuario", {
+        const response = await fetch(`${URL2}obtener-usuario`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -210,7 +212,7 @@ class Usuario{
     
 
     static async actualizarfoto(id:number,foto:string):Promise<any>{
-      const response=await fetch("http://192.168.0.179:3001/actualizar-foto", {
+      const response=await fetch(`${URL2}actualizar-foto`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -228,7 +230,7 @@ class Usuario{
     async actualizadatos(id: number,update:Update): Promise<any> {
       if(update.verify(this)){
         try {
-          const response = await fetch("http://192.168.0.179:3001/actualizar-datos-usuario", {
+          const response = await fetch(`${URL2}actualizar-datos-usuario`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

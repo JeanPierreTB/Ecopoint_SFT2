@@ -1,3 +1,4 @@
+import { URL2 } from "../../URL/URL";
 import APuntodeReciclaje from "./APuntodeReciclaje";
 import { Alert } from "react-native";
 
@@ -10,7 +11,7 @@ class PRBaterias extends APuntodeReciclaje{
         console.log("Punto de baterias creado....")
         try{
             console.log("esto no es una prueba",id_usuario,id);
-            await fetch("http://192.168.0.179:3001/realizar-punto", {
+            await fetch(`${URL2}realizar-punto`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',

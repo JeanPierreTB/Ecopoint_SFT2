@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { TextInput } from 'react-native'
 import { Text, View,TouchableOpacity ,StyleSheet,Alert} from 'react-native'
-import Usuario from "../Clases/Usuario/Usuario"
+import Usuario from "../Clases/Usuario_Vista/Usuario"
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
 

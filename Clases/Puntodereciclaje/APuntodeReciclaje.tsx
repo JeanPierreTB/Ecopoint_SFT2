@@ -1,3 +1,5 @@
+import { URL2 } from "../../URL/URL";
+
 abstract class APuntodeReciclaje {
     public latitud:number;
     public longitud:number;
@@ -14,7 +16,7 @@ abstract class APuntodeReciclaje {
     
     static async visualizarpuntos(): Promise<any[]> {
         try {
-          const response = await fetch('http://192.168.0.179:3001/obtener-puntos');
+          const response = await fetch(`${URL2}obtener-puntos`);
           
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -31,7 +33,7 @@ abstract class APuntodeReciclaje {
       static async obtenerpuntosarelizar(usuario:number): Promise<any[]> {
         try {
           console.log("esto es de la clase"+usuario);
-          const response = await fetch('http://192.168.0.179:3001/obtener-punto-realizar', {
+          const response = await fetch(`${URL2}obtener-punto-realizar`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',

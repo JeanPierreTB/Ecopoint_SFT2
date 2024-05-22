@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView 
 import { useFocusEffect } from '@react-navigation/native'; // Importa useFocusEffect
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../Types/types";
-import Usuario from '../Clases/Usuario/Usuario';
+import Usuario from '../Clases/Usuario_Vista/Usuario';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GoogleVerificationStrategy from '../Clases/ActualizarDatos/GoogleVerificationStrategy';
 import LocalVerificationStrategy from '../Clases/ActualizarDatos/LocalVerificationStrategy';

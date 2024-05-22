@@ -3,7 +3,7 @@ import DniVerificationStrategy from "../Validador/DniVerificationStrategy";
 import EmailVerificationStrategy from "../Validador/EmailVerificationStrategy";
 import PasswordVerificationStrategy from "../Validador/PasswordVerificationStrategy";
 import PhoneVerificationStrategy from "../Validador/PhoneVerificationStrategy";
-import Usuario from "../Usuario/Usuario";
+import Usuario from "../Usuario_Vista/Usuario";
 
 class LocalVerificationStrategy implements VerificationStrategy {
     verify(data: Usuario): boolean {

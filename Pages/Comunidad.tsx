@@ -13,7 +13,7 @@ import { useEffect, useState, useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Picker } from "@react-native-picker/picker";
-import Usuario from "../Clases/Usuario/Usuario";
+import Usuario from "../Clases/Usuario_Vista/Usuario";
 import AComentario from "../Clases/Comentario/AComentario";
 import CSoporteFactory from "../Clases/Comentario/CSoporteFactory";
 import IcomentarioFactory from "../Clases/Comentario/IComentarioFactory";

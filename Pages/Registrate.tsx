@@ -5,7 +5,7 @@ import google from '../assets/google.png'
 import ios from '../assets/ios.png'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
-import Usuario from '../Clases/Usuario/Usuario';
+import Usuario from '../Clases/Usuario_Vista/Usuario';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';

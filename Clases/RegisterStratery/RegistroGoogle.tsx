@@ -1,5 +1,5 @@
 import { Alert } from "react-native";
-import Usuario from "../Usuario/Usuario";
+import Usuario from "../Usuario_Vista/Usuario";
 import EmailVerificationStrategy from "../Validador/EmailVerificationStrategy";
 import Validador from "../Validador/Validador";
 import RegistroStrategy from "./RegistroStrategy";

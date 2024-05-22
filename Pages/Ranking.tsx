@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
 import CajaRanking from '../Componentes/CajaRanking';
-import Usuario from '../Clases/Usuario/Usuario';
+import Usuario from '../Clases/Usuario_Vista/Usuario';
 
 type RankingProps = {
     navigation: StackNavigationProp<RootStackParamList, 'Ranking'>; 

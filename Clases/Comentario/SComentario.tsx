@@ -1,4 +1,5 @@
 import AComentario from "./AComentario";
+import { URL2 } from "../../URL/URL";
 
 class SComentario extends AComentario{
     constructor(des:string){
@@ -8,7 +9,7 @@ class SComentario extends AComentario{
     async agregarComentario(id: number): Promise<boolean> {
         console.log("Sugerencia de soporte factory creado...")
         try{
-            const response=await fetch("http://192.168.0.179:3001/realizar-comentario",{
+            const response=await fetch(`${URL2}realizar-comentario`,{
                 method:'POST',
                 headers:{
                     "Content-Type":"application/json"

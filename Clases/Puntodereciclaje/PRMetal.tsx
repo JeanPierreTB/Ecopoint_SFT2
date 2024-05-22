@@ -1,5 +1,6 @@
 import APuntodeReciclaje from "./APuntodeReciclaje";
 import { Alert } from "react-native";
+import { URL2 } from "../../URL/URL";
 
 class PRMetal extends APuntodeReciclaje{
     constructor(id:number=0,latitud:number,longitud:number,lugar:string){
@@ -11,7 +12,7 @@ class PRMetal extends APuntodeReciclaje{
 
         try{
             console.log("esto no es una prueba",id_usuario,id);
-            await fetch("http://192.168.0.179:3001/realizar-punto", {
+            await fetch(`${URL2}realizar-punto`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',

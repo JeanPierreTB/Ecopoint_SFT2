@@ -1,4 +1,4 @@
-import Usuario from "../Usuario/Usuario";
+import Usuario from "../Usuario_Vista/Usuario";
 import UpdateStraterty from "./UpdateStraterty";
 class Update{
     private updateStraterty:UpdateStraterty;

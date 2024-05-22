@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView,Image } from "react-native";
 import CajaAmigos from "../Componentes/CajaAmigos";
-import Usuario from "../Clases/Usuario/Usuario";
+import Usuario from "../Clases/Usuario_Vista/Usuario";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';

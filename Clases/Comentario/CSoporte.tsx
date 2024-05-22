@@ -1,3 +1,4 @@
+import { URL2 } from "../../URL/URL";
 import AComentario from "./AComentario";
 
 class CSoporte extends AComentario{
@@ -9,7 +10,7 @@ class CSoporte extends AComentario{
         console.log("Comentario de soporte factory creado...")
 
         try{
-            const response=await fetch("http://192.168.0.179:3001/realizar-comentario",{
+            const response=await fetch(`${URL2}realizar-comentario`,{
                 method:'POST',
                 headers:{
                     "Content-Type":"application/json"

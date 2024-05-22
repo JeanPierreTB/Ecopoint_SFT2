@@ -1,7 +1,7 @@
 import VerificationStrategy from "./UpdateStraterty";
 import DniVerificationStrategy from "../Validador/DniVerificationStrategy";
 import PhoneVerificationStrategy from "../Validador/PhoneVerificationStrategy";
-import Usuario from "../Usuario/Usuario";
+import Usuario from "../Usuario_Vista/Usuario";
 class GoogleVerificationStrategy implements VerificationStrategy {
     verify(data: Usuario): boolean {
       console.log("Cuenta de google");

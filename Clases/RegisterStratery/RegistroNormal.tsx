@@ -1,6 +1,6 @@
 // RegistroNormal.ts
 import { Alert } from "react-native";
-import Usuario from "../Usuario/Usuario";
+import Usuario from "../Usuario_Vista/Usuario";
 import PasswordVerificationStrategy from "../Validador/PasswordVerificationStrategy";
 import DniVerificationStrategy from "../Validador/DniVerificationStrategy";
 import EmailVerificationStrategy from "../Validador/EmailVerificationStrategy";

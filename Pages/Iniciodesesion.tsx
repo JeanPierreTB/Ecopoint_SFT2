@@ -6,7 +6,7 @@ import ios from '../assets/ios.png'
 import { TextInput } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
-import Usuario from "../Clases/Usuario/Usuario";
+import Usuario from "../Clases/Usuario_Vista/Usuario";
 import { objetivos } from '../data/Objetivos'
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';

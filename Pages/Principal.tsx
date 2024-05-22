@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from "reac
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { useNavigation ,useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Usuario from "../Clases/Usuario/Usuario";
+import Usuario from "../Clases/Usuario_Vista/Usuario";
 import { Dimensions } from "react-native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';

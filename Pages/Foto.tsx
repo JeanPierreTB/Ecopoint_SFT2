@@ -3,11 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View ,Image} from 'react-native';
 import * as MediaLibrary from 'expo-media-library'
 import Boton from '../Componentes/Boton';
-import Usuario from '../Clases/Usuario/Usuario';
+import Usuario from '../Clases/Usuario_Vista/Usuario';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../Types/types";
-import PuntodeReciclaje from '../Clases/Puntodereciclaje/PuntodeReciclaje';
 
 
 type FotoProps = {

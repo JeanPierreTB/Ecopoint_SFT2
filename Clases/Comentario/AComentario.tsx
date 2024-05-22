@@ -1,3 +1,4 @@
+import { URL2 } from "../../URL/URL";
 abstract class AComentario {
     private des:string;
  
@@ -12,7 +13,7 @@ abstract class AComentario {
     }
     static async recuperarComentarios(): Promise<any[]> {
         try {
-            const response = await fetch('http://192.168.0.179:3001/obtener-comentarios');
+            const response = await fetch(`${URL2}obtener-comentarios`);
             if (!response.ok) throw new Error('HTTP error');
             const data = await response.json();
             return data.comentarios;
