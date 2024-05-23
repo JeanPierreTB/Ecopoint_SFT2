@@ -3,16 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View ,Image} from 'react-native';
 import * as MediaLibrary from 'expo-media-library'
 import Boton from '../Componentes/Boton';
-import Usuario from '../Clases/Usuario_Vista/Usuario';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../Types/types";
-import APuntodeReciclaje from '../Clases/Puntodereciclaje/APuntodeReciclaje';
-import PRPapelFactory from '../Clases/Puntodereciclaje/PRPapelFactory';
-import PRPlasticoFactory from '../Clases/Puntodereciclaje/PRPlasticoFactory';
-import PRMetalFactory from '../Clases/Puntodereciclaje/PRMetalFactory';
-import PRBateriasFactory from '../Clases/Puntodereciclaje/PRBateriasFactory';
-import PRRopaFactory from '../Clases/Puntodereciclaje/PRRopaFactory';
+import { actualizarfoto } from '../Funciones_Fetch/Usuario/ActualizarFoto';
+import { PuntorealizadoQR } from '../Funciones_Fetch/Puntodereciclaje/PuntoRealizadoQR';
 
 
 type FotoProps = {
@@ -53,7 +48,8 @@ const tomarfoto = async () => {
               const usuarioObjeto = usuario ? JSON.parse(usuario) : null;
               if (assetURI) {
                   // Actualizar la foto del usuario con la URI de la imagen guardada
-                  Usuario.actualizarfoto(usuarioObjeto, assetURI);
+                  //Usuario.actualizarfoto(usuarioObjeto, assetURI);
+                  actualizarfoto(usuarioObjeto,assetURI);
                   alert('Foto actualizada');
                   navigation.navigate("cuenta")
               }
@@ -70,7 +66,7 @@ const tomarfoto = async () => {
     return <Text>No hay acceso a la camara</Text>
   }
 
-  const fabricapunto = (tipo: string, punto: APuntodeReciclaje): APuntodeReciclaje | null => {
+  /*const fabricapunto = (tipo: string, punto: any): APuntodeReciclaje | null => {
     let tipopunto = null;
     switch (tipo) {
         case "Papel":
@@ -91,7 +87,7 @@ const tomarfoto = async () => {
     }
 
     return tipopunto !== null ? tipopunto.crearpuntoderecilaje(punto.id, punto.latitud, punto.longitud, punto.lugar) : null;
-}
+}*/
 
 
   const handleBarCodeScanned = async ({ type, data }: { type: string; data: string }) => {
@@ -103,8 +99,9 @@ const tomarfoto = async () => {
       const lugarseleccionadodata = lugarseleccionado? JSON.parse(lugarseleccionado):null;
       const usuario = await AsyncStorage.getItem('usuario');
       const usuarioObjeto = usuario? JSON.parse(usuario):null;
-      const punto=fabricapunto(parsedData.tipo,parsedData);
-      const res=await punto!.puntorealizadoqr(lugarseleccionadodata.puntoqr,lugarseleccionadodata.cantidad,usuarioObjeto);
+      //const punto=fabricapunto(parsedData.tipo,parsedData);
+      //const res=await punto!.puntorealizadoqr(lugarseleccionadodata.puntoqr,lugarseleccionadodata.cantidad,usuarioObjeto);
+      const res=await PuntorealizadoQR(lugarseleccionadodata.puntoqr,parsedData.latitud,parsedData.longitud,parsedData.lugar,parsedData.tipo,lugarseleccionadodata.cantidad,usuarioObjeto)
       alert(res.mensaje);
 
       navigation.navigate("principal")

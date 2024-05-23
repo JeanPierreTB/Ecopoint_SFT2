@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { TextInput } from 'react-native'
 import { Text, View,TouchableOpacity ,StyleSheet,Alert} from 'react-native'
-import Usuario from "../Clases/Usuario_Vista/Usuario"
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
+import { changepassword } from '../Funciones_Fetch/Usuario/ChangePassword';
 
 type OContraProps = {
     navigation: StackNavigationProp<RootStackParamList, 'ocontra'>; 
@@ -14,15 +14,14 @@ const OContraseña: React.FC<OContraProps> = ({ navigation }) => {
   const [email,setemail]=useState('');
   const [password,setpassword]=useState('');
 
-  const handleclik = () => {
+  const handleclik = async () => {
     
 
     if (!password && !email) {
         Alert.alert('Error', 'Completa todos los campos');
     } 
     else{
-        const usuario=new Usuario(email,password);
-        usuario.changepassword(password,navigation);
+        await changepassword(email,password,navigation);
         setemail('');
         setpassword('');
     }

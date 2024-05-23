@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { TransaccionProps } from '../Types/types';
-import APuntodeReciclaje from '../Clases/Puntodereciclaje/APuntodeReciclaje';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from "@react-navigation/native";
-import Usuario from '../Clases/Usuario_Vista/Usuario';
+import { DatosUsuario } from '../Funciones_Fetch/Usuario/DatosUsuario';
+import { Obtenerpuntosrealizar } from '../Funciones_Fetch/Puntodereciclaje/Obtenerpuntosrealizar';
+import { PuntoRealizado } from '../Funciones_Fetch/Puntodereciclaje/PuntoRealizado';
 
 
 
@@ -27,8 +28,8 @@ const Transaccion: React.FC<any> = ({ navigation }:TransaccionProps) => {
     try {
       const usuario = await AsyncStorage.getItem('usuario');
         const usuarioObjeto = usuario ? JSON.parse(usuario) : null;
-        const usuarioData = await Usuario.datosusuario(usuarioObjeto);
-      const puntos = await APuntodeReciclaje.obtenerpuntosarelizar(usuarioData.id);
+        const usuarioData=await DatosUsuario(usuarioObjeto);
+        const puntos=await Obtenerpuntosrealizar(usuarioData.id);
       puntos ? setTransacciones(puntos) : null;
     } catch (e) {
       alert('Ocurrio un error');
@@ -52,12 +53,15 @@ const Transaccion: React.FC<any> = ({ navigation }:TransaccionProps) => {
       const usuario = await AsyncStorage.getItem('usuario');
       const usuarioObjeto = usuario? JSON.parse(usuario):null;
       console.log("id",usuarioObjeto);
-      const data = await APuntodeReciclaje.puntorealizado(selectedOption,usuarioObjeto);
+      //const data = await APuntodeReciclaje.puntorealizado(selectedOption,usuarioObjeto);
+      const data=await PuntoRealizado(selectedOption,usuarioObjeto)
       if (data) {
         const nuevaLista = transacciones?.filter(transaccion => transaccion.id !== data.punto?.id);
         setTransacciones(nuevaLista || []);
       }
       setSelectedPuntaje("");
+      setcantidad('0');
+      setSelectedOption("");
       alert(data.mensaje);
     } catch (e) {
       alert("Ocurrió un error");

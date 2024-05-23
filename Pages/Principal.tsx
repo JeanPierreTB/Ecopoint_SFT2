@@ -3,14 +3,15 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from "reac
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { useNavigation ,useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Usuario from "../Clases/Usuario_Vista/Usuario";
 import { Dimensions } from "react-native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from "react-native-maps-directions";
 import { Picker } from '@react-native-picker/picker';
-import APuntodeReciclaje from "../Clases/Puntodereciclaje/APuntodeReciclaje";
+import { VisualizarPuntos } from "../Funciones_Fetch/Puntodereciclaje/VisualizarPuntos";
+import { DatosUsuario } from "../Funciones_Fetch/Usuario/DatosUsuario";
+import { Obtenerpuntosrealizar } from "../Funciones_Fetch/Puntodereciclaje/Obtenerpuntosrealizar";
 
 
 type PrincipalProps = {
@@ -33,7 +34,7 @@ export default function Principal({ navigation }: PrincipalProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allPoints = await APuntodeReciclaje.visualizarpuntos();
+        const allPoints=await VisualizarPuntos();
         setPuntosRec(allPoints);
       } catch (error) {
         console.log("Ocurrió un error ", error);
@@ -44,8 +45,8 @@ export default function Principal({ navigation }: PrincipalProps) {
       try {
         const usuario = await AsyncStorage.getItem('usuario');
         const usuarioObjeto = usuario ? JSON.parse(usuario) : null;
-        const usuarioData = await Usuario.datosusuario(usuarioObjeto);
-        const puntosRealizar = await APuntodeReciclaje.obtenerpuntosarelizar(usuarioData.id);
+        const usuarioData=await DatosUsuario(usuarioObjeto);
+        const puntosRealizar=await Obtenerpuntosrealizar(usuarioData.id);
         setPuntosAr(puntosRealizar);
       } catch (e) {
         console.log("Ocurrió un error ", e);
@@ -79,7 +80,7 @@ export default function Principal({ navigation }: PrincipalProps) {
       try {
         const usuario = await AsyncStorage.getItem('usuario');
         const usuarioObjeto = usuario ? JSON.parse(usuario) : null;
-        const usuarioData = await Usuario.datosusuario(usuarioObjeto);
+        const usuarioData=await DatosUsuario(usuarioObjeto);
         console.log("esto del usuario:"+usuarioData.foto);
         setDatos(usuarioData);
       } catch (e) {
@@ -99,7 +100,7 @@ export default function Principal({ navigation }: PrincipalProps) {
     
   }, [isFocused,selectedCategory]);
 
-  const handlePunto = async (punto: APuntodeReciclaje) => {
+  const handlePunto = async (punto: any) => {
     try {
       await AsyncStorage.setItem("punto", JSON.stringify(punto));
       navigation.navigate("Preciclaje");
@@ -114,8 +115,11 @@ export default function Principal({ navigation }: PrincipalProps) {
   };
 
   const filteredPoints = selectedCategory
-    ? puntosrec.filter(punto => punto.tipo === selectedCategory)
+    ? puntosrec.filter(punto => punto.tipo === selectedCategory) 
     : puntosrec;
+  const filteredArPoints = selectedCategory
+    ? puntosar.filter(punto => punto.tipo === selectedCategory)
+    : puntosar;
 
   return (
     <View style={styles.container}>
@@ -177,7 +181,7 @@ export default function Principal({ navigation }: PrincipalProps) {
             </Marker>
           ))}
 
-          {puntosar.map((punto) => (
+          {filteredArPoints.map((punto) => (
             <MapViewDirections
               key={punto.id}
               origin={origin}

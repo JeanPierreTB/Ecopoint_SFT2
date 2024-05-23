@@ -3,11 +3,10 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView 
 import { useFocusEffect } from '@react-navigation/native'; // Importa useFocusEffect
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../Types/types";
-import Usuario from '../Clases/Usuario_Vista/Usuario';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import GoogleVerificationStrategy from '../Clases/ActualizarDatos/GoogleVerificationStrategy';
-import LocalVerificationStrategy from '../Clases/ActualizarDatos/LocalVerificationStrategy';
-import Update from '../Clases/ActualizarDatos/Update';
+import { DatosUsuario } from '../Funciones_Fetch/Usuario/DatosUsuario';
+import { ActualizarDatos } from '../Funciones_Fetch/Usuario/ActualizarDatos';
+
 
 type CuentaProps = {
   navigation: StackNavigationProp<RootStackParamList, "cuenta">;
@@ -32,7 +31,7 @@ function Cuenta({ navigation }: CuentaProps) {
   const datosusuario = async () => {
     const usuarioid = await AsyncStorage.getItem('usuario');
     const usuarioObjeto = usuarioid ? JSON.parse(usuarioid) : null;
-    const data = await Usuario.datosusuario(usuarioObjeto);
+    const data=await DatosUsuario(usuarioObjeto);
     
     setNombre(data.nombre);
     if (data.ntelefono !== null && data.dni !== null) {
@@ -62,20 +61,20 @@ function Cuenta({ navigation }: CuentaProps) {
     else {
       const usuarioid = await AsyncStorage.getItem('usuario');
       const usuarioObjeto = usuarioid ? JSON.parse(usuarioid) : null;
-      const usuario=new Usuario(Nombre,Contrasena,parseInt(DNI),parseInt(Telefono));
       let respuesta;
 
-      const verificationStrategy=new Update(new GoogleVerificationStrategy());
+      
       
       if (Contrasena === "Indefinido") {
-        
-        respuesta=await usuario.actualizadatos(usuarioObjeto,verificationStrategy);
-        
+        console.log("Enetre aqui");
+        //respuesta=await usuario.actualizadatos(usuarioObjeto,verificationStrategy);
+        respuesta=await ActualizarDatos(usuarioObjeto,Nombre,"Indefinido",parseInt(DNI),parseInt(Telefono));
 
       }
       else {
-        verificationStrategy.setUpdateStraterty(new LocalVerificationStrategy() );
-        respuesta=await usuario.actualizadatos(usuarioObjeto,verificationStrategy);
+        //respuesta=await usuario.actualizadatos(usuarioObjeto,verificationStrategy);
+        respuesta=await ActualizarDatos(usuarioObjeto,Nombre,Contrasena,parseInt(DNI),parseInt(Telefono));
+
         
       }
 
@@ -84,7 +83,7 @@ function Cuenta({ navigation }: CuentaProps) {
         navigation.navigate("perfil");
 
       } else {
-        return;
+        Alert.alert('Error',respuesta.mensaje);
       }
 
 

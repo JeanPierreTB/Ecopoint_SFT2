@@ -6,13 +6,14 @@ import ios from '../assets/ios.png'
 import { TextInput } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
-import Usuario from "../Clases/Usuario_Vista/Usuario";
 import { objetivos } from '../data/Objetivos'
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import RegistroGoogle from '../Clases/RegisterStratery/RegistroGoogle';
-import Registro from '../Clases/RegisterStratery/Registro'
+import { verificarcuenta } from '../Funciones_Fetch/Usuario/Verificarcuenta'
+import { islogin } from '../Funciones_Fetch/Usuario/Islogin'
+import { Register } from '../Funciones_Fetch/Usuario/Register'
+
 
 
 
@@ -73,27 +74,31 @@ const Iniciodesesion: React.FC<IniciodesesionProps> = ({ navigation }) => {
   }
 
   const almacenarusuario=async(user:any)=>{
-    const usuario=new Usuario(user.email,"");
-    const respuesta=await usuario.verifiyaccount();
+
+    const respuesta=await verificarcuenta(user.email);
     if(respuesta){
-        usuario.islogin(navigation);
+        console.log("aqui ni deberia")
+        await islogin(user.email,"",navigation);
+        
     }else{
-        const registroGoogle=new Registro(new RegistroGoogle());
-        usuario.register(navigation,registroGoogle);
-        usuario.islogin(navigation);
+        console.log("Esta bien")
+        await Register(user.email,"",0,0);
+        console.log("acabe de registrame");
+        await islogin(user.email,"",navigation);
+
     }
     
   }
 
 
-  const handleclik = () => {
+  const handleclik = async () => {
     const campos=[email,password];
     if(campos.some(campo=>!campo)){
         Alert.alert('Error',"Completa los campos")
     }
     else{
-        const usuario=new Usuario(email,password)
-        usuario.islogin(navigation)
+        await islogin(email,password,navigation);
+        
         setemail('');
         setpassword('');
     }

@@ -7,7 +7,8 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../Types/types";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from "@react-navigation/native";
-import Usuario from "../Clases/Usuario_Vista/Usuario";
+import { DatosUsuario } from "../Funciones_Fetch/Usuario/DatosUsuario";
+import { DatosInformativos } from "../Funciones_Fetch/Usuario/DatosInformativos";
 
 type PerfilProps = {
   navigation: StackNavigationProp<RootStackParamList, "perfil">;
@@ -29,9 +30,9 @@ function Perfil({ navigation }: PerfilProps) {
       const usuario = await AsyncStorage.getItem('usuario');
       const usuarioObjeto = usuario ? JSON.parse(usuario) : null;
       console.log(usuarioObjeto);
-      const datosUsuario = await Usuario.datosusuario(usuarioObjeto);
+      const datosUsuario=await DatosUsuario(usuarioObjeto);
       AsyncStorage.setItem('datos', JSON.stringify(datosUsuario));
-      const infousuario=await Usuario.datosinformativos(usuarioObjeto);
+      const infousuario=await DatosInformativos(usuarioObjeto);
       console.log(infousuario);
       setdatos(datosUsuario);
       

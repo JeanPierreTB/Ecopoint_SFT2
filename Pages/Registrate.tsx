@@ -5,15 +5,13 @@ import google from '../assets/google.png'
 import ios from '../assets/ios.png'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
-import Usuario from '../Clases/Usuario_Vista/Usuario';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import PasswordVerificationStrategy from '../Clases/Validador/PasswordVerificationStrategy'
-import Validador from '../Clases/Validador/Validador'
-import RegistroNormal from '../Clases/RegisterStratery/RegistroNormal'
-import RegistroGoogle from '../Clases/RegisterStratery/RegistroGoogle'
-import Registro from '../Clases/RegisterStratery/Registro'
+import { verificarcuenta } from '../Funciones_Fetch/Usuario/Verificarcuenta'
+import { islogin } from '../Funciones_Fetch/Usuario/Islogin'
+import { Register } from '../Funciones_Fetch/Usuario/Register'
+
 
 
 WebBrowser.maybeCompleteAuthSession();
@@ -71,14 +69,16 @@ export default function Registrate({ navigation }: RegistrateProps) {
   }
 
   const almacenarusuario=async(user:any)=>{
-    const usuario=new Usuario(user.email,"");
-    const respuesta=await usuario.verifiyaccount();
+
+    const respuesta=await verificarcuenta(user.email);
     if(respuesta){
-        usuario.islogin(navigation);
+        await islogin(user.email,"",navigation);
+        
     }else{
-        const registroGoogle=new Registro(new RegistroGoogle());
-        usuario.register(navigation,registroGoogle);
-        usuario.islogin(navigation);
+        
+        await Register(user.email,"",0,0);
+        await islogin(user.email,"",navigation);
+
     }
     
   }
@@ -88,13 +88,11 @@ export default function Registrate({ navigation }: RegistrateProps) {
     if (!DNI || !Correo || !Contra || !NTelefono) {
         Alert.alert('Error', 'Completa todos los campos');
     } else {
-        const usuario = new Usuario(Correo, Contra, parseInt(DNI), parseInt(NTelefono));
-        const respuesta = await usuario.verifiyaccount();
+        const respuesta=await verificarcuenta(Correo);
 
         if (!respuesta) {
-            const registroNormal=new Registro(new RegistroNormal());
             
-            const response = await usuario.register(navigation,registroNormal);
+            const response=await Register(Correo,Contra,parseInt(DNI),parseInt(NTelefono))
 
 
             if (response) navigation.navigate('sesion');

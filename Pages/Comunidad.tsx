@@ -13,12 +13,9 @@ import { useEffect, useState, useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Picker } from "@react-native-picker/picker";
-import Usuario from "../Clases/Usuario_Vista/Usuario";
-import AComentario from "../Clases/Comentario/AComentario";
-import CSoporteFactory from "../Clases/Comentario/CSoporteFactory";
-import IcomentarioFactory from "../Clases/Comentario/IComentarioFactory";
-import CComentarioFactory from "../Clases/Comentario/CComentarioFactory";
-import SComentarioFactory from "../Clases/Comentario/SComentarioFactory";
+import { RecuperarComentarios } from "../Funciones_Fetch/Comentario/RecuperarComentario";
+import { DatosUsuario } from "../Funciones_Fetch/Usuario/DatosUsuario";
+import { AgregarComentario } from "../Funciones_Fetch/Comentario/AgregarComentario";
 
 const opciones = [
   {
@@ -58,7 +55,7 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
 
   const mostrarcomentario = async () => {
     try {
-      const allcoment = await AComentario.recuperarComentarios();
+      const allcoment=await RecuperarComentarios();
       setcometarios(allcoment);
     } catch (e) {
       console.log("Ocurrio un error", e);
@@ -69,7 +66,7 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
     try{
       const usuario = await AsyncStorage.getItem('usuario');
       const usuarioObjeto = usuario? JSON.parse(usuario):null;
-      const usuario1=await Usuario.datosusuario(usuarioObjeto);
+      const usuario1=await DatosUsuario(usuarioObjeto);
       setdatos(usuario1);
     }catch(e){
       console.log('Ocurrio un error',e)
@@ -80,22 +77,7 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
     setSelectedOption(itemValue);
   };
 
-  const crearComentariosFabrica=(option:number,des:string):AComentario|null=>{
-    
-     switch(option){
-      case 1:
-        const csoportefactory=new CSoporteFactory();
-        return csoportefactory.crearComentario(des);
-      case 2:
-        const ccomentarioFactory=new CComentarioFactory();
-        return ccomentarioFactory.crearComentario(des);
-      case 3:
-        const scomentarioFactory=new SComentarioFactory;
-        return scomentarioFactory.crearComentario(des);
-
-     }
-     return null;
-  }
+  
 
   const handleclik = async () => {
     try {
@@ -105,8 +87,7 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
       const usuario = await AsyncStorage.getItem("usuario");
       const usuariobjeto = usuario ? JSON.parse(usuario) : null;
       console.log(texto);
-      const comentario=crearComentariosFabrica(parseInt(selectedOption),texto);
-      await comentario?.agregarComentario(usuariobjeto); 
+      await AgregarComentario(usuariobjeto,texto,parseInt(selectedOption));
       await mostrarcomentario(); 
       textInputRef.current?.clear();
       alert("Comentario agregado");
