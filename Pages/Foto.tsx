@@ -7,6 +7,12 @@ import Usuario from '../Clases/Usuario_Vista/Usuario';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../Types/types";
+import APuntodeReciclaje from '../Clases/Puntodereciclaje/APuntodeReciclaje';
+import PRPapelFactory from '../Clases/Puntodereciclaje/PRPapelFactory';
+import PRPlasticoFactory from '../Clases/Puntodereciclaje/PRPlasticoFactory';
+import PRMetalFactory from '../Clases/Puntodereciclaje/PRMetalFactory';
+import PRBateriasFactory from '../Clases/Puntodereciclaje/PRBateriasFactory';
+import PRRopaFactory from '../Clases/Puntodereciclaje/PRRopaFactory';
 
 
 type FotoProps = {
@@ -64,7 +70,47 @@ const tomarfoto = async () => {
     return <Text>No hay acceso a la camara</Text>
   }
 
-  
+  const fabricapunto = (tipo: string, punto: APuntodeReciclaje): APuntodeReciclaje | null => {
+    let tipopunto = null;
+    switch (tipo) {
+        case "Papel":
+            tipopunto = new PRPapelFactory();
+            break;
+        case "Plástico":
+            tipopunto = new PRPlasticoFactory();
+            break;
+        case "Metal":
+            tipopunto = new PRMetalFactory();
+            break;
+        case "Baterias":
+            tipopunto = new PRBateriasFactory();
+            break;
+        case "Ropa":
+            tipopunto = new PRRopaFactory();
+            break;
+    }
+
+    return tipopunto !== null ? tipopunto.crearpuntoderecilaje(punto.id, punto.latitud, punto.longitud, punto.lugar) : null;
+}
+
+
+  const handleBarCodeScanned = async ({ type, data }: { type: string; data: string }) => {
+    if (!escaneoRealizado) { // Verificar si ya se ha realizado un escaneo
+      alert(`Código ${type} escaneado: ${data}`);
+      setEscaneoRealizado(true);
+      const parsedData=JSON.parse(data);
+      const lugarseleccionado = await AsyncStorage.getItem('recorridoData');
+      const lugarseleccionadodata = lugarseleccionado? JSON.parse(lugarseleccionado):null;
+      const usuario = await AsyncStorage.getItem('usuario');
+      const usuarioObjeto = usuario? JSON.parse(usuario):null;
+      const punto=fabricapunto(parsedData.tipo,parsedData);
+      const res=await punto!.puntorealizadoqr(lugarseleccionadodata.puntoqr,lugarseleccionadodata.cantidad,usuarioObjeto);
+      alert(res.mensaje);
+
+      navigation.navigate("principal")
+
+    }
+  };
 
 
   return (
@@ -74,7 +120,7 @@ const tomarfoto = async () => {
       style={styles.camera}
       type={type}
       ref={cameraRef}
-      
+      onBarCodeScanned={handleBarCodeScanned}
     >
     <Text>Hello</Text>
     </Camera>

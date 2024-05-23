@@ -52,8 +52,46 @@ abstract class APuntodeReciclaje {
         }
       }
 
-      abstract realizarpunto(id_usuario:number,id:number,navigation:any): Promise<void>;
+      static async puntorealizado(punto: string,id:number): Promise<any> {
+        try {
+            const response = await fetch(`${URL2}punto-cancelado`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    lugar: punto,
+                    id:id
+                }),
+            });
+    
+            const data = await response.json();
+    
+            return {
+                mensaje: data.mensaje || "Mensaje predeterminado",
+                res: data.res || false,
+                punto: data.punto || null
+            };
+    
+        } catch (e) {
+            console.error("Ocurrió un error", e);
+            return {
+                mensaje: "Ocurrió un error",
+                res: false,
+                punto: null
+            };
+        }
+    }
 
+    
+
+    
+
+
+
+      
+      abstract realizarpunto(id_usuario:number,id:number,navigation:any): Promise<void>;
+      abstract puntorealizadoqr(lugarseleccionado:string,cantidad:number,id:number):Promise<any>
 
 
     

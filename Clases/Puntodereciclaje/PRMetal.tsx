@@ -49,6 +49,36 @@ class PRMetal extends APuntodeReciclaje{
             console.error("Ocurrio un error",e)
         }
     }
+    
+    async puntorealizadoqr(lugarseleccionado: string, cantidad: number, id: number): Promise<any> {
+      console.log("Punto realizo QR con Metal");
+
+      try{
+        const response=await fetch(`${URL2}punto-cancelado-qr`,{
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              lugarseleccionado:lugarseleccionado,
+              latitud:this.latitud,
+              longitud:this.longitud,
+              lugar:this.lugar,
+              tipo:"Metal",
+              cantidad:cantidad,
+              id:id
+          }),
+        })
+
+        const data=await response.json();
+        console.log(data);
+        return data;
+      }catch(e){
+        console.log("Ocurrio un error",e)
+      }
+      
+    }
+    
 
 }
 

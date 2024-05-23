@@ -17,7 +17,7 @@ export type RootStackParamList = {
     enviar:undefined;
     ocontra:undefined;
     Preciclaje:undefined;
-    foto: undefined; // Aquí especificamos que 'foto' puede recibir un objeto con una propiedad 'propExtra' opcional de tipo booleano
+    foto: undefined; 
     agregar:undefined;
     misamigos:undefined;
     notificaciones:undefined

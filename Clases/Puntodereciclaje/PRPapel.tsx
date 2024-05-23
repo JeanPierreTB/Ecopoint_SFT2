@@ -49,6 +49,36 @@ class PRPapel extends APuntodeReciclaje{
             console.error("Ocurrio un error",e)
         }
     }
+
+    async puntorealizadoqr(lugarseleccionado: string, cantidad: number, id: number): Promise<any> {
+      console.log("Punto realizo QR con Papel");
+
+      try{
+        const response=await fetch(`${URL2}punto-cancelado-qr`,{
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              lugarseleccionado:lugarseleccionado,
+              latitud:this.latitud,
+              longitud:this.longitud,
+              lugar:this.lugar,
+              tipo:"Papel",
+              cantidad:cantidad,
+              id:id
+          }),
+        })
+
+        const data=await response.json();
+        console.log(data);
+        return data;
+      }catch(e){
+        console.log("Ocurrio un error",e)
+      }
+    }
+    
+   
 }
 
 export default PRPapel;
