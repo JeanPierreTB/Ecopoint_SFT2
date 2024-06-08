@@ -19,7 +19,7 @@ export async function changepassword(nombre:string,contranueva:string,navigation
             navigation.navigate('sesion');
         }
         else
-            Alert.alert('Error','Correo no encontrado')
+            Alert.alert('Error','Correo o Contraseña incorrecta no encontrado')
 
     })
     .catch(e=>console.error(`Ocurrio un error ${e}`))
