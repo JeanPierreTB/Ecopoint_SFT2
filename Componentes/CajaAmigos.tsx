@@ -2,11 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { View ,Image,Text,StyleSheet,TouchableOpacity} from 'react-native'
 import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import Usuario from '../Clases/Usuario_Vista/Usuario';
-import Notifiacion from '../Clases/Notifiacion';
-import Comentario from '../Clases/Comentario/Comentario';
 
-
+import { AgregarNotificacionamigo } from '../Funciones_Fetch/Notificacion/AgregarNotificacionamigo';
 
 
 interface Props{
@@ -31,8 +28,8 @@ function CajaAmigos({foto,nombre,puntaje,tipo=true,id,onupdate,navigation}:Props
     const dataobjeto=data? JSON.parse(data):null;
 
     console.log("esto es de nombre",usuarioObjeto)
-    const noti=new Notifiacion(`${dataobjeto.nombre} te ha enviado una solictud de amistad`,1,dataobjeto.nombre,dataobjeto.foto);
-    const respuesta=await noti.agregarnotifiacionamigo(id);
+
+    const respuesta=await AgregarNotificacionamigo(id,`${dataobjeto.nombre} te ha enviado una solictud de amistad`,1,dataobjeto.nombre,dataobjeto.foto)
     if(respuesta.res){
       setagreado(true);
     }
