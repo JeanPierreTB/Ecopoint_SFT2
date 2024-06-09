@@ -1,9 +1,9 @@
 import React from 'react'
 import { View,Image,StyleSheet,Text, TouchableOpacity } from 'react-native'
 import Icon from "react-native-vector-icons/FontAwesome";
-import Usuario from '../Clases/Usuario_Vista/Usuario';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import { AgregarAmigosF } from '../Funciones_Fetch/Usuario/AgregarAmigos';
+import { AmigoRechazado } from '../Funciones_Fetch/Usuario/Amigorechazado';
 
 interface Props{
     foto:string,
@@ -22,14 +22,14 @@ function CajaNotificacion({foto,nombre,des,tipo,noti}:Props) {
     const datos = await AsyncStorage.getItem('datos');
     const usuarioObjeto1 = datos? JSON.parse(datos):null;
 
-    const usuario1=await Usuario.agregaramigos(usuarioObjeto,nombre,usuarioObjeto1.nombre,usuarioObjeto1.foto,`${usuarioObjeto1.nombre} acepto tu soliitud de amistad`,0);
+    const usuario1=await AgregarAmigosF(usuarioObjeto,nombre,usuarioObjeto1.nombre,usuarioObjeto1.foto,`${usuarioObjeto1.nombre} acepto tu soliitud de amistad`,0);
     alert(usuario1);
     noti();
   }
   const handleclilk2=async ()=>{
     const datos = await AsyncStorage.getItem('datos');
     const usuarioObjeto1 = datos? JSON.parse(datos):null;
-    const usuario2=await Usuario.amigorechazado(nombre,usuarioObjeto1.nombre,usuarioObjeto1.foto,`${usuarioObjeto1.nombre} ha rechazado tu solicitud de amistad`,0);
+    const usuario2=await AmigoRechazado(nombre,usuarioObjeto1.nombre,usuarioObjeto1.foto,`${usuarioObjeto1.nombre} ha rechazado tu solicitud de amistad`,0);
     alert(usuario2);
     noti();
   }
