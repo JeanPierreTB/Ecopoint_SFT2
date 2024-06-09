@@ -9,6 +9,7 @@ import { Actualizarobjetivoshoy } from '../Funciones_Fetch/Objetivo/Actualizarob
 import { ObtenerGanador } from '../Funciones_Fetch/Recompesa/Obtenerganador';
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { AgregarNotificacionamigo } from '../Funciones_Fetch/Notificacion/AgregarNotificacionamigo';
 
 
 const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
@@ -60,8 +61,11 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
   const obtenerganador=async()=>{
     const usuario = await AsyncStorage.getItem('usuario');
     const usuarioObjeto = usuario? JSON.parse(usuario):null;
+    const datos = await AsyncStorage.getItem('datos');
+    const usuarioObjeto1 = datos? JSON.parse(datos):null;
     const ganador=await ObtenerGanador(usuarioObjeto);
     if(ganador.res){
+      await AgregarNotificacionamigo(usuarioObjeto,'Usted ha ganado el premio de la semana',0,usuarioObjeto1.nombre,usuarioObjeto1.foto)
       setmensaje(ganador.mensaje)
     }
     

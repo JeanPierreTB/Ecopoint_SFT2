@@ -8,6 +8,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../Types/types";
 import { actualizarfoto } from '../Funciones_Fetch/Usuario/ActualizarFoto';
 import { PuntorealizadoQR } from '../Funciones_Fetch/Puntodereciclaje/PuntoRealizadoQR';
+import { AgregarNotificacionamigo } from '../Funciones_Fetch/Notificacion/AgregarNotificacionamigo';
 
 
 type FotoProps = {
@@ -99,11 +100,14 @@ const tomarfoto = async () => {
       const lugarseleccionadodata = lugarseleccionado? JSON.parse(lugarseleccionado):null;
       const usuario = await AsyncStorage.getItem('usuario');
       const usuarioObjeto = usuario? JSON.parse(usuario):null;
+      const datos = await AsyncStorage.getItem('datos');
+      const usuarioObjeto1 = datos? JSON.parse(datos):null;
       //const punto=fabricapunto(parsedData.tipo,parsedData);
       //const res=await punto!.puntorealizadoqr(lugarseleccionadodata.puntoqr,lugarseleccionadodata.cantidad,usuarioObjeto);
       const res=await PuntorealizadoQR(lugarseleccionadodata.puntoqr,parsedData.latitud,parsedData.longitud,parsedData.lugar,parsedData.tipo,lugarseleccionadodata.cantidad,usuarioObjeto)
+      console.log("Mensaje:"+res.data.lugar);
       alert(res.mensaje);
-
+      await AgregarNotificacionamigo(usuarioObjeto,`Reciclado en ${res.data.lugar}`,0,usuarioObjeto1.nombre,usuarioObjeto1.foto);
       navigation.navigate("principal")
 
     }
