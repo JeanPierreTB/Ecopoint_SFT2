@@ -12,11 +12,12 @@ interface Props{
     puntaje:string,
     tipo?:boolean,
     id:number,
+    rol?:string,
     onupdate?:()=>void,
     navigation?:any
 }
 
-function CajaAmigos({foto,nombre,puntaje,tipo=true,id,onupdate,navigation}:Props) {
+function CajaAmigos({foto,nombre,puntaje,tipo=true,id,rol="Cliente",onupdate,navigation}:Props) {
 
   const[agregado,setagreado]=useState(false);
 
@@ -49,7 +50,7 @@ function CajaAmigos({foto,nombre,puntaje,tipo=true,id,onupdate,navigation}:Props
 
   
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,{backgroundColor:rol==="Admi"? 'yellow':'lightgreen'}]}>
       {tipo && (
         <>
           {agregado ? (
@@ -101,8 +102,8 @@ const styles=StyleSheet.create({
        justifyContent:'space-around',
        width:'100%',
        padding:5,
-       borderRadius:20,
-       backgroundColor:'lightgreen'
+       borderRadius:20
+      
     },
     foto:{
         width:50,

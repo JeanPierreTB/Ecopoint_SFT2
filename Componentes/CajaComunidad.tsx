@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View,Text,Image, StyleSheet} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { AprobarComentario } from '../Funciones_Fetch/Usuario/AprobarComentario';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RecuperarComentarios } from '../Funciones_Fetch/Comentario/RecuperarComentario';
+
 
 
 interface Comunidad{
@@ -8,14 +12,40 @@ interface Comunidad{
     foto:string,
     com:string,
     tipo:number,
+    rol?:string,
+    aprobado?:boolean,
+    reloadpage?:any
 }
 
-function CajaComunidad({nombre,foto,com,tipo}:Comunidad) {
+function CajaComunidad({nombre,foto,com,tipo,rol="Cliente",aprobado=false,reloadpage=null}:Comunidad) {
+
+  const handleclik=async ()=>{
+
+ 
+    
+    const resultado=await AprobarComentario(com);
+    if(resultado){
+        reloadpage();
+    }
+    return;
+
+  }
+
+  
+
   return (
 
-    <View style={[styles.container ,tipo===1? styles.rojo:tipo===2? styles.gris:styles.verde]}>
+    <View style={[styles.container ,tipo===1? styles.rojo:tipo===2? styles.gris:tipo===3? styles.verde:styles.yellow]}>
         
-        <Text style={{fontWeight:'bold'}}>{nombre}</Text>
+        {rol==="Admi" && tipo!==5? 
+        (
+            <View style={styles.container2}>
+                <Text style={{fontWeight:'bold'}}>{nombre}</Text>
+                <Icon name={aprobado? "check":"clock-o"} size={25} color="white" onPress={()=>handleclik()}/>
+            </View>
+        ):(
+            <Text style={{fontWeight:'bold'}}>{nombre}</Text>
+        )}
         <View style={styles.caja}>
             <Image
             style={styles.imagen}
@@ -38,6 +68,11 @@ const styles=StyleSheet.create({
         padding:10,
         
     },
+    container2:{
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between'
+    },
     rojo:{
         backgroundColor:'red'
     },
@@ -46,6 +81,9 @@ const styles=StyleSheet.create({
     },
     gris:{
         backgroundColor:'grey'
+    },
+    yellow:{
+        backgroundColor:'yellow'
     },
     caja:{
         flexDirection:'row',

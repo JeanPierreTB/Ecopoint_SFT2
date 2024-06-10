@@ -16,6 +16,7 @@ function Notificaciones() {
     const usuarioObjeto = usuario ? JSON.parse(usuario) : null;
     const usuario1 = await AsyncStorage.getItem("");
     const noti = await VerNotificaciones(usuarioObjeto);
+    console.log(noti);
     setdata(noti);
   };
   return (

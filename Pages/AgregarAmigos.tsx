@@ -51,6 +51,8 @@ function AgregarAmigos() {
               foto={usuario.foto}
               nombre={usuario.nombre}
               puntaje={usuario.puntaje}
+              rol={usuario.rol}
+              
             />
           ))}
         </View>

@@ -45,13 +45,17 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
   const [texto, settexto] = useState("");
   const [comentarios, setcometarios] = useState<any[]>([]);
   const [datos,setdatos]=useState<any>(null);
+  const [rol,setrol]=useState("");
+  const [reloadpage,setreloadpage]=useState(false);
   const textInputRef = useRef<TextInput>(null);
   
 
   useEffect(() => {
     mostrarcomentario();
     datosusuario();
-  }, []);
+  }, [reloadpage]);
+
+  
 
   const mostrarcomentario = async () => {
     try {
@@ -67,6 +71,12 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
       const usuario = await AsyncStorage.getItem('usuario');
       const usuarioObjeto = usuario? JSON.parse(usuario):null;
       const usuario1=await DatosUsuario(usuarioObjeto);
+
+      console.log("Rol:"+usuario1.rol)
+      if (usuario1.rol !== "Cliente") {
+        setSelectedOption("5");
+      }
+      setrol(usuario1.rol);
       setdatos(usuario1);
     }catch(e){
       console.log('Ocurrio un error',e)
@@ -81,6 +91,7 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
 
   const handleclik = async () => {
     try {
+      console.log("Opcion seleccionada:"+selectedOption);
       if (selectedOption === "0") {
         return alert("Selecciona un tipo de comentario");
       }
@@ -95,6 +106,10 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
       console.error("Error al recuperar el usuario");
     }
   };
+
+  const reloadpagefunction=()=>{
+    setreloadpage(true);
+  }
 
   return (
     <View style={styles.container2}>
@@ -120,6 +135,9 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
                 foto= {comentario.Usuario?.foto}
                 com={comentario.des}
                 tipo={comentario.tipo}
+                rol={rol}
+                aprobado={comentario.aprobado}
+                reloadpage={reloadpagefunction}
               />
             ))
           ) : (
@@ -148,11 +166,13 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
           />
         </TouchableOpacity>
 
-        <View style={[styles.pickContainer,selectedOption==="0"? styles.orange:selectedOption==="1"? styles.rojo:selectedOption==="2"? styles.gris:styles.verde ]}>
+        {rol==="Cliente"?
+        (<View style={[styles.pickContainer,selectedOption==="0"? styles.orange:selectedOption==="1"? styles.rojo:selectedOption==="2"? styles.gris:styles.verde]}>
           <Picker
             style={styles.pick}
             selectedValue={selectedOption}
             onValueChange={handlePickerChange}
+            enabled={true}
           >
             {opciones.map((opcion, index) => (
               <Picker.Item
@@ -163,7 +183,25 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
               />
             ))}
           </Picker>
-        </View>
+        </View>)
+          :
+          (<View style={[styles.pickContainer,{backgroundColor:'yellow'}]}>
+            <Picker
+              style={styles.pick}
+              selectedValue={selectedOption}
+              onValueChange={()=>setSelectedOption("5")}
+              enabled={false} 
+            >
+            <Picker.Item
+              key={5}
+              label="5: Default"
+              value="5"
+              style={styles.picker}
+            />
+            </Picker>
+            </View>)
+        }
+        
       </View>
     </View>
   );
@@ -245,6 +283,9 @@ const styles = StyleSheet.create({
   },
   orange:{
     backgroundColor:"orange"
+  },
+  yellow:{
+    backgroundColor:"Yellow"
   },
   container:{
     marginTop:40,

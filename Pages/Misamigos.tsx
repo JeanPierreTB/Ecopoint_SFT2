@@ -47,6 +47,7 @@ const Misamigos: React.FC<MisamigosProps> = ({ navigation }) => {
               puntaje={amigo.puntaje}
               tipo={false}
               id={amigo.id}
+              rol={amigo.rol}
               navigation={navigation}
             />
           ))}

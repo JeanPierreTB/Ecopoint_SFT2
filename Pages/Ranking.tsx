@@ -5,6 +5,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
 import CajaRanking from '../Componentes/CajaRanking';
 import { ObtenerRanking } from '../Funciones_Fetch/Usuario/ObtenerRanking';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 type RankingProps = {
     navigation: StackNavigationProp<RootStackParamList, 'Ranking'>; 
@@ -20,8 +22,19 @@ function Ranking({navigation}:RankingProps) {
 
   const obteneranking=async()=>{
     try{
+        const datauser = await AsyncStorage.getItem("datos");
+        const userd = datauser ? JSON.parse(datauser) : null;
+        console.log("Datos del usuario:"+userd.rol);
         const datos= await ObtenerRanking();
-        setranking(datos) 
+        var datosfinales;
+        if(userd.rol==="Cliente"){
+            datosfinales=datos.filter((data:any)=>data.rol==="Cliente");
+        }
+        else if(userd.rol==="Admi"){
+            datosfinales=datos.filter((data:any)=>data.rol==="Admi");
+        }
+
+        setranking(datosfinales) 
     }catch(e){
         console.error('Ocurrio un error',e)
     }
