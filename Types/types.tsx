@@ -22,6 +22,7 @@ export type RootStackParamList = {
     misamigos:undefined;
     notificaciones:undefined
     chatpersonal:undefined
+    agregarpunto:undefined
   };
 
 

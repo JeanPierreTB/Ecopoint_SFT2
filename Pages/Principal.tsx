@@ -12,6 +12,7 @@ import { Picker } from '@react-native-picker/picker';
 import { VisualizarPuntos } from "../Funciones_Fetch/Puntodereciclaje/VisualizarPuntos";
 import { DatosUsuario } from "../Funciones_Fetch/Usuario/DatosUsuario";
 import { Obtenerpuntosrealizar } from "../Funciones_Fetch/Puntodereciclaje/Obtenerpuntosrealizar";
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 
 
 type PrincipalProps = {
@@ -29,6 +30,9 @@ export default function Principal({ navigation }: PrincipalProps) {
   const [puntosar, setPuntosAr] = useState<any[]>([]);
   const [datos, setDatos] = useState<any>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [rol,setrol]=useState("Cliente");
+  const [searchTerm, setSearchTerm] = useState("");
+
 
 
   useEffect(() => {
@@ -81,6 +85,7 @@ export default function Principal({ navigation }: PrincipalProps) {
         const usuario = await AsyncStorage.getItem('usuario');
         const usuarioObjeto = usuario ? JSON.parse(usuario) : null;
         const usuarioData=await DatosUsuario(usuarioObjeto);
+        setrol(usuarioData.rol);
         console.log("esto del usuario:"+usuarioData.foto);
         setDatos(usuarioData);
       } catch (e) {
@@ -109,6 +114,31 @@ export default function Principal({ navigation }: PrincipalProps) {
     }
   };
 
+  const handleSelectLocation = async (details: any) => {
+    // Handle cuando se selecciona un lugar en Google Places Autocomplete
+    if (details) {
+      try {
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(details.description)}&key=AIzaSyAw5ap8PEu1JO6Ia1k1frTPktbdTDGuuhk`
+        );
+        const data = await response.json();
+        if (data.results.length > 0) {
+          const { lat, lng } = data.results[0].geometry.location;
+          const shortName = details.structured_formatting.main_text; // Ejemplo de cómo obtener un nombre corto
+          console.log("Coordenadas seleccionadas:", { latitude: lat, longitude: lng });
+          await AsyncStorage.setItem("puntoagregar", JSON.stringify({ latitude: lat, longitude: lng,nombre:shortName }));
+          navigation.navigate('agregarpunto');
+        } else {
+          console.log("No se encontraron coordenadas para el lugar seleccionado");
+        }
+      } catch (error:any) {
+        console.error("Error al obtener las coordenadas:", error.message);
+      }
+    } else {
+      console.log("No se seleccionó ningún lugar válido");
+    }
+  };
+
   
   const handlePickerChange = (itemValue: string) => {
     setSelectedCategory(itemValue);
@@ -126,7 +156,9 @@ export default function Principal({ navigation }: PrincipalProps) {
       <View style={styles.principal1}>
         <View>
           <Text style={styles.titulo}>Bienvenido!</Text>
-          <Picker
+
+          
+            <Picker
             style={styles.picker}
             selectedValue={selectedCategory}
             onValueChange={handlePickerChange}
@@ -138,6 +170,8 @@ export default function Principal({ navigation }: PrincipalProps) {
             <Picker.Item label="Baterias" value="Baterias" />
             <Picker.Item label="Ropa" value="Ropa" />
           </Picker>
+          
+          
         </View>
         <TouchableOpacity onPress={() => navigation.navigate("perfil")}>
         {datos && datos.foto && (
@@ -151,6 +185,27 @@ export default function Principal({ navigation }: PrincipalProps) {
         </TouchableOpacity>
       </View>
       <View style={styles.principal2}>
+        {rol!=="Cliente"? (
+          <View style={styles.autocompleteContainer}>
+          <GooglePlacesAutocomplete 
+          placeholder="Buscar..."
+          onPress={(data, details) => handleSelectLocation(details)}
+
+          query={{
+            key:"AIzaSyAw5ap8PEu1JO6Ia1k1frTPktbdTDGuuhk",
+            language:'en'
+          }}
+
+          styles={{
+            container:{position:"absolute",width:"100%"},
+            listView:{backgroundColor:'white'}
+          }}
+        
+        />
+
+        </View>
+        ):null}
+            
         <MapView
           style={styles.mapStyle}
           initialRegion={{
@@ -230,11 +285,27 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "space-between",
   },
-  principal2: {},
+  principal2: {
+    position:'relative',
+    width:'100%',
+    height:'100%'
+  },
   mapStyle: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },picker: {
     fontSize: 15,
-  }
+  },
+  searchInput: {
+    borderWidth: 1,
+    borderColor: "black",
+    padding: 8,
+    width: 200,
+    borderRadius: 10,
+  },
+  autocompleteContainer: {
+    position: "absolute",
+    width: "100%",
+    zIndex: 100,
+  },
 });

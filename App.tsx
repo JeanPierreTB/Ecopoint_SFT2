@@ -17,6 +17,7 @@ import AgregarAmigos from './Pages/AgregarAmigos';
 import Misamigos from './Pages/Misamigos';
 import Notificaciones from './Pages/Notificaciones';
 import Chatpersonal from './Pages/ChatPersonal';
+import AgregarPunto from './Pages/AgregarPunto';
 
 
 
@@ -117,6 +118,13 @@ const CargaInicial: React.FC<{ navigation: any }> = ({ navigation }) => {
           name="misamigos"
           component={Misamigos}
           options={{headerShown:false}}
+        />
+
+        <Stack.Screen 
+          name="agregarpunto"
+          component={AgregarPunto}
+          options={{headerShown:false}}
+        
         />
 
         <Stack.Screen
