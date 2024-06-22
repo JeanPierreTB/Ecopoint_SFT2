@@ -14,6 +14,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import DatePicker from 'react-native-date-picker';
 import { launchImageLibrary, Asset, ImageLibraryOptions } from 'react-native-image-picker';
 import { AgregarRecompesa } from '../Funciones_Fetch/Recompesa/AgregarRecompesa';
+import { UltimaRecompesa } from '../Funciones_Fetch/Recompesa/UltimaRecompesa';
 
 
 const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
@@ -32,11 +33,21 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
 
   useEffect(()=>{
     //poblarobjetivos(objetivos);
+    obtenerfecha();
     obtenerecompesa();
     recuperarobjetivos();
     actualizarobjetivos();
     obtenerganador();
   },[]);
+
+
+  const obtenerfecha=async ()=>{
+    const resultado=await UltimaRecompesa();
+    const fechaInicioObtenida = new Date(resultado);
+    setFechaInicio(fechaInicioObtenida);
+
+
+  }
 
   const recuperarobjetivos=async ()=>{
     try{
@@ -84,7 +95,7 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
   }
 
   const formatDate = (date:Date) => {
-    return date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+    return date.toISOString().split('T')[0]; 
   };
 
   const handleChoosePhoto = () => {
@@ -111,6 +122,7 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
   const handleclik= async ()=>{
     console.log("Descripcion: " + descripcion);
 
+  
   const fechaInicio = new Date(fechainicio);
 
   const fechaFin = new Date(fechaInicio);
@@ -178,11 +190,12 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
             </View>
             <View>
                 <Text style={styles.textoboton}>Fecha de inicio</Text>
-                <TouchableOpacity style={styles.botonf} onPress={() => setOpenInicio(true)}>
+                <TouchableOpacity style={styles.botonf} disabled={true} onPress={() => setOpenInicio(true)}>
                   <Text style={styles.textoboton2}>{formatDate(fechainicio)}</Text>
                 </TouchableOpacity>
                 <DatePicker
                   modal
+                
                   open={openInicio}
                   date={fechainicio}
                   mode="date"

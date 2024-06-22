@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, TextInput,TouchableOpacity} from "react-native";
 import { Picker } from '@react-native-picker/picker';
+import { AgregarPuntoE } from "../Funciones_Fetch/Puntodereciclaje/AgregarpuntoE";
 
 
 function AgregarPunto() {
@@ -21,6 +22,18 @@ function AgregarPunto() {
     setLongitud(String(puntofinal.longitude)); 
     setNombre(puntofinal.nombre);
   };
+
+  const handleclik=async ()=>{
+    if(valor==="-"){
+      return alert("Seleccione el tipo")
+    }
+    const res=await AgregarPuntoE(parseFloat(latitud),parseFloat(longitud),nombre,valor);
+
+    if(res) alert("Punto agregado con exito!")
+    else alert("Errror al agregar el punto")
+    
+    
+  }
 
   return (
     <View style={styles.container}>
@@ -71,14 +84,11 @@ function AgregarPunto() {
           
         </View>
 
-        <View style={styles.container3}>
-            <TouchableOpacity style={styles.boton}>
-                <Text style={styles.textob}>Cancelar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.boton}>
+            
+        <TouchableOpacity style={styles.boton} onPress={()=>handleclik()}>
                 <Text style={styles.textob}>Agregar</Text>
-            </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
+        
         
       </View>
     </View>
@@ -90,6 +100,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flex: 1,
     alignItems: 'center',
+    justifyContent:'center',
     gap: 10
   },
   titulo: {
@@ -131,12 +142,16 @@ const styles = StyleSheet.create({
   },
   textob:{
     fontWeight:'bold',
-    fontSize:18
+    fontSize:18,
+    textAlign:'center'
   },
   boton:{
+    marginTop:60,
     backgroundColor:'lightgreen',
     padding:20,
     borderRadius:20,
+    width:'80%',
+    
     
     
   }

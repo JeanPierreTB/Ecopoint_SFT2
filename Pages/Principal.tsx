@@ -139,6 +139,15 @@ export default function Principal({ navigation }: PrincipalProps) {
     }
   };
 
+  const handleopcion=()=>{
+    if(rol==="Cliente"){
+      navigation.navigate("perfil")
+    }
+    else if(rol==="Admi"){
+      navigation.navigate("cuenta")
+    }
+  }
+
   
   const handlePickerChange = (itemValue: string) => {
     setSelectedCategory(itemValue);
@@ -150,6 +159,8 @@ export default function Principal({ navigation }: PrincipalProps) {
   const filteredArPoints = selectedCategory
     ? puntosar.filter(punto => punto.tipo === selectedCategory)
     : puntosar;
+
+
 
   return (
     <View style={styles.container}>
@@ -173,7 +184,7 @@ export default function Principal({ navigation }: PrincipalProps) {
           
           
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("perfil")}>
+        <TouchableOpacity onPress={() => handleopcion()}>
         {datos && datos.foto && (
             <Image
               style={styles.imagen}

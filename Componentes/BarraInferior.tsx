@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import Consejos from '../Pages/Consejos';
@@ -7,10 +7,26 @@ import Comunidad from '../Pages/Comunidad';
 import Recorrido from '../Pages/Transaccion';
 import Principal from '../Pages/Principal';
 import Transaccion from '../Pages/Transaccion';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { DatosUsuario } from '../Funciones_Fetch/Usuario/DatosUsuario';
+
 
 const Tab = createBottomTabNavigator();
 
 function BarraInferior() {
+
+  const[rol,setrol]=useState('Cliente');
+
+  useEffect(()=>{
+    barrarenderizado();
+  },[]);
+
+  const barrarenderizado=async()=>{
+    const usuarioid = await AsyncStorage.getItem('usuario');
+    const usuarioObjeto = usuarioid ? JSON.parse(usuarioid) : null;
+    const data=await DatosUsuario(usuarioObjeto);
+    setrol(data.rol);
+  }
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -57,7 +73,9 @@ function BarraInferior() {
           unmountOnBlur: true
         }}
       />
-      <Tab.Screen
+
+      {rol==="Cliente"? 
+      (<Tab.Screen
         name="Transaccion"
         component={Transaccion}
         options={{
@@ -67,7 +85,10 @@ function BarraInferior() {
           headerShown: false,
           unmountOnBlur: true
         }}
-      />
+      />):
+      null}
+      
+      
     </Tab.Navigator>
   );
 }
