@@ -105,10 +105,16 @@ const tomarfoto = async () => {
       //const punto=fabricapunto(parsedData.tipo,parsedData);
       //const res=await punto!.puntorealizadoqr(lugarseleccionadodata.puntoqr,lugarseleccionadodata.cantidad,usuarioObjeto);
       const res=await PuntorealizadoQR(lugarseleccionadodata.puntoqr,parsedData.latitud,parsedData.longitud,parsedData.lugar,parsedData.tipo,lugarseleccionadodata.cantidad,usuarioObjeto)
-      console.log("Mensaje:"+res.data.lugar);
-      alert(res.mensaje);
-      await AgregarNotificacionamigo(usuarioObjeto,`Reciclado en ${res.data.lugar}`,0,usuarioObjeto1.nombre,usuarioObjeto1.foto);
+      if(!res.res){
+        alert(res.mensaje);
+      }
+      else{
+        alert(res.mensaje);
+        await AgregarNotificacionamigo(usuarioObjeto,`Reciclado en ${res.data.lugar}`,0,usuarioObjeto1.nombre,usuarioObjeto1.foto);
+      }
       navigation.navigate("principal")
+
+      
 
     }
   };

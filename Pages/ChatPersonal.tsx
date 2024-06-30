@@ -19,7 +19,8 @@ function Chatpersonal() {
   const [image, setimage] = useState("");
   const textInputRef = useRef<TextInput>(null);
   const [texto, settexto] = useState("");
-  const [info, setinfo] = useState([]);
+  const [info, setinfo] = useState<any>([]);
+  const[usuarios,setusuarios]=useState<any>([]);
 
   useEffect(() => {
     dataamigo();
@@ -42,9 +43,19 @@ function Chatpersonal() {
     const amigo = await AsyncStorage.getItem("idamigo");
     const amigoid = amigo ? JSON.parse(amigo) : null;
     const chatamigo = await RecuperarChatUsuario(usuarioid, amigoid);
-    chatamigo.map((chat:any)=>console.log(chat.Usuario))
     //console.log("data", chatamigo);
-    setinfo(chatamigo);
+    const comentarios = chatamigo.comentarios;
+    const usuarios = chatamigo.enviados;
+
+
+    console.log(comentarios[0].id);
+    console.log(usuarios[0].nombre)
+
+   
+    setusuarios(usuarios);
+
+    setinfo(comentarios);
+
   };
 
   const handleclick = async () => {
@@ -59,6 +70,7 @@ function Chatpersonal() {
 
     const response=await AgregarComentarioPersonal(usuarioid,amigoid,texto,4)
     alert(response.mensaje);
+    textInputRef.current?.clear();
     datacomentario();
   };
 
@@ -71,21 +83,21 @@ function Chatpersonal() {
 
       <ScrollView>
         <View style={styles.container4}>
-          {info && info.length > 0 ? (
-            info.map((inf: any) => (
-              <CajaComunidad
-                key={inf.id}
-                nombre={inf.Usuario.nombre}
-                foto={
-                  inf.Usuario?.foto 
-                }
-                com={inf.des}
-                tipo={inf.tipo}
-              />
-            ))
-          ) : (
-            <Text>Sin conversación</Text>
-          )}
+        {info && info.length > 0 ? (
+          info.map((inf: any, index: number) => (
+            <CajaComunidad
+              key={inf.id}
+              nombre={usuarios[index].nombre} // Accede directamente usando el índice del mapeo
+              foto={usuarios[index].foto}
+              com={inf.des}
+              tipo={inf.tipo}
+            />
+          ))
+        ) : (
+          <Text>Sin conversación</Text>
+        )}
+
+          
         </View>
       </ScrollView>
 

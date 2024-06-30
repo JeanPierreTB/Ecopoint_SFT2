@@ -3,9 +3,16 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, TextInput,TouchableOpacity} from "react-native";
 import { Picker } from '@react-native-picker/picker';
 import { AgregarPuntoE } from "../Funciones_Fetch/Puntodereciclaje/AgregarpuntoE";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../Types/types';
+
+type AgregarPuntoProps = {
+  navigation: StackNavigationProp<RootStackParamList, "agregarpunto">;
+};
+
+export default function AgregarPunto({ navigation }: AgregarPuntoProps) {
 
 
-function AgregarPunto() {
   const [latitud, setLatitud] = useState('');
   const [longitud, setLongitud] = useState('');
   const [nombre, setNombre] = useState("");
@@ -29,7 +36,10 @@ function AgregarPunto() {
     }
     const res=await AgregarPuntoE(parseFloat(latitud),parseFloat(longitud),nombre,valor);
 
-    if(res) alert("Punto agregado con exito!")
+    if(res){
+      alert("Punto agregado con exito!");
+      navigation.navigate("principal");
+    } 
     else alert("Errror al agregar el punto")
     
     
@@ -157,4 +167,3 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AgregarPunto;

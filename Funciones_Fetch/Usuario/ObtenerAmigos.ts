@@ -13,6 +13,7 @@ export async function ObtenernoAmigos(id:number) {
                 }),
         })
         const data=await response.json();
+        console.log("fINAL:"+data);
         return data.data;
 
       }catch(e){

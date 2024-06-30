@@ -13,6 +13,7 @@ export async function AprobarComentario(com:string) {
 
         const data=await response.json();
         console.log("datos no se",data);
+        alert("Mensaje:"+data.mensaje);
         return data.res;
       }catch(e){
         console.error("Ocurrio un error",e)

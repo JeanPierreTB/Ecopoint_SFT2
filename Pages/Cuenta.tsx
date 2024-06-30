@@ -6,6 +6,8 @@ import { RootStackParamList } from "../Types/types";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DatosUsuario } from '../Funciones_Fetch/Usuario/DatosUsuario';
 import { ActualizarDatos } from '../Funciones_Fetch/Usuario/ActualizarDatos';
+import Icon from "react-native-vector-icons/FontAwesome";
+
 
 
 type CuentaProps = {
@@ -17,6 +19,7 @@ function Cuenta({ navigation }: CuentaProps) {
   const [Telefono, setTelefono] = useState('');
   const [DNI, setDNI] = useState('');
   const [Contrasena, setContrasena] = useState('');
+  const [rol,setrol]=useState('');
 
   useFocusEffect(
     React.useCallback(() => {
@@ -51,6 +54,8 @@ function Cuenta({ navigation }: CuentaProps) {
       setContrasena("Indefinido");
     }
 
+    setrol(data.rol)
+
   }
 
   const handleclik = async () => {
@@ -80,7 +85,8 @@ function Cuenta({ navigation }: CuentaProps) {
 
       if (respuesta.res) {
         Alert.alert('Exito', 'Campos actualizados');
-        navigation.navigate("perfil");
+        if(rol==="Cliente") navigation.navigate("perfil");
+        else if(rol==="Admi") navigation.navigate("principal");
 
       } else {
         Alert.alert('Error',respuesta.mensaje);
@@ -97,7 +103,18 @@ function Cuenta({ navigation }: CuentaProps) {
       style={{ flex: 1, marginTop: 10 }}
     >
       <View style={styles.container}>
+        {rol==="Cliente"? 
+        (<Text style={styles.titulo}>Mi cuenta</Text>):
+        (
+        <View style={{flexDirection:'row',justifyContent:'space-around'}}>
         <Text style={styles.titulo}>Mi cuenta</Text>
+        <Icon name="sign-out" size={30} color="red" onPress={() => navigation.navigate("sesion")} />
+        </View>
+        
+        )  
+      
+      }
+        
         <View style={styles.cuenta}>
           <View style={styles.inputContainer}>
             <Text style={styles.texto}>Usuario</Text>

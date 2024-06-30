@@ -22,6 +22,7 @@ function AgregarAmigos() {
       const usuario = await AsyncStorage.getItem("usuario");
       const usuarioObjeto = usuario ? JSON.parse(usuario) : null;
       const usuarios = await ObtenernoAmigos(usuarioObjeto);
+      console.log(usuarios);
       setusuarios(usuarios);
     } catch (e) {
       console.error("Ocurrio un error", e);

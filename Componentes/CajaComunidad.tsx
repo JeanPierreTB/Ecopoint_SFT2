@@ -47,10 +47,12 @@ function CajaComunidad({nombre,foto,com,tipo,rol="Cliente",aprobado=false,reload
             <Text style={{fontWeight:'bold'}}>{nombre}</Text>
         )}
         <View style={styles.caja}>
-            <Image
+        {foto ? ( // Verifica si hay una foto antes de intentar renderizarla
+          <Image
             style={styles.imagen}
             source={{ uri: foto }}
-            />
+          />
+        ) : null}
             <Text style={styles.texto}>{com}</Text>
         </View>
 

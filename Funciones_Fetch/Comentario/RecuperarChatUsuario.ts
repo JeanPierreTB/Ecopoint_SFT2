@@ -14,6 +14,7 @@ export async function RecuperarChatUsuario(id_usuario:number,id_amigo:number) {
         })
 
         const data=await respone.json();
+        console.log("Data final:"+data.data);
         return data.data;
     }catch(e){
         console.error("Ocurrio un error",e)

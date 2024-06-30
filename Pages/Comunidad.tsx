@@ -44,23 +44,30 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
   const [selectedOption, setSelectedOption] = useState("0");
   const [texto, settexto] = useState("");
   const [comentarios, setcometarios] = useState<any[]>([]);
+  const [usuarios,setusuarios]=useState<any>([])
   const [datos,setdatos]=useState<any>(null);
   const [rol,setrol]=useState("");
-  const [reloadpage,setreloadpage]=useState(false);
   const textInputRef = useRef<TextInput>(null);
   
 
   useEffect(() => {
     mostrarcomentario();
     datosusuario();
-  }, [reloadpage]);
+  }, []);
 
+
+  
   
 
   const mostrarcomentario = async () => {
     try {
       const allcoment=await RecuperarComentarios();
-      setcometarios(allcoment);
+      const comentariosf = allcoment.comentarios;
+      const usuariosf = allcoment.enviados;
+      console.log(comentariosf[0].id);
+      console.log(usuariosf[0].nombre);
+      setcometarios(comentariosf);
+      setusuarios(usuariosf);
     } catch (e) {
       console.log("Ocurrio un error", e);
     }
@@ -107,45 +114,42 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
     }
   };
 
-  const reloadpagefunction=()=>{
-    setreloadpage(true);
-  }
+  
 
   return (
     <View style={styles.container2}>
-      <View style={styles.comunidad}>
-        <Text style={styles.titulo}>Comunidad</Text>
-        {datos && datos.foto && (
-            <Image
-              style={styles.imagen}
-              source={{
-                uri: datos.foto
-              }}
-            />
-          )}
-      </View>
-      
-        <ScrollView style={styles.container4}>
-            <View style={styles.container}>
-            {comentarios && comentarios.length > 0 ? (
-            comentarios.map((comentario) => (
-              <CajaComunidad
-                key={comentario.id}
-                nombre={comentario.Usuario.nombre}
-                foto= {comentario.Usuario?.foto}
-                com={comentario.des}
-                tipo={comentario.tipo}
-                rol={rol}
-                aprobado={comentario.aprobado}
-                reloadpage={reloadpagefunction}
-              />
-            ))
-          ) : (
-            <Text style={styles.texto}>Comentarios de hoy</Text>
-          )}
-            </View>
-          
-        </ScrollView>
+  <View style={styles.comunidad}>
+    <Text style={styles.titulo}>Comunidad</Text>
+    {datos && datos.foto ? (
+      <Image
+        style={styles.imagen}
+        source={{
+          uri: datos.foto
+        }}
+      />
+    ) : null}
+  </View>
+
+  <ScrollView style={styles.container4}>
+    <View style={styles.container}>
+      {comentarios && comentarios.length > 0 ? (
+        comentarios.map((comentario, index) => (
+          <CajaComunidad
+            key={comentario.id}
+            nombre={usuarios[index]?.nombre}
+            foto={usuarios[index]?.foto}
+            com={comentario.des}
+            tipo={comentario.tipo}
+            rol={rol}
+            aprobado={comentario.aprobado}
+            reloadpage={mostrarcomentario}
+          />
+        ))
+      ) : (
+        <Text style={styles.texto}>Comentarios de hoy</Text>
+      )}
+    </View>
+  </ScrollView>
       
 
       <View style={styles.container3}>

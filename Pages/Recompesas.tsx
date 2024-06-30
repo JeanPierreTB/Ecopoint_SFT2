@@ -22,7 +22,7 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
   const[objetivos,setobjetivos]=useState<any[]>([]);
   const[recompesasem,setrecompesasem]=useState<any>();
   const[mensaje,setmensaje]=useState("");
-  const[rol,setrol]=useState("Cliente");
+  const[rol,setrol]=useState("");
   const[descripcion,setdescripcion]=useState("");
   const[puntaje,setpuntaje]=useState("");
   const [fechainicio, setFechaInicio] = useState(new Date());
@@ -32,16 +32,22 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
 
 
   useEffect(()=>{
-    //poblarobjetivos(objetivos);
     obtenerfecha();
     obtenerecompesa();
-    recuperarobjetivos();
+
+    
+    if(rol==="Cliente") recuperarobjetivos();
+    
     actualizarobjetivos();
     obtenerganador();
   },[]);
 
 
   const obtenerfecha=async ()=>{
+    const usuario = await AsyncStorage.getItem('usuario');
+    const usuarioObjeto = usuario? JSON.parse(usuario):null;
+    const usuario1=await DatosUsuario(usuarioObjeto);
+    setrol(usuario1.rol)
     const resultado=await UltimaRecompesa();
     const fechaInicioObtenida = new Date(resultado);
     setFechaInicio(fechaInicioObtenida);
@@ -54,6 +60,7 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
       const usuario = await AsyncStorage.getItem('usuario');
       const usuarioObjeto = usuario? JSON.parse(usuario):null;
       const allobjetivos:any=await RecuperarObjetivos(usuarioObjeto);
+      console.log(allobjetivos);
       setobjetivos(allobjetivos);
     }catch(e){
       console.log('Ocurrio un error',e)
@@ -148,6 +155,8 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
   else if(!res){
     alert("Recompesa no agregada")
   }
+
+  obtenerfecha();
   
 
   }
@@ -176,7 +185,7 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
         <Text style={styles.titulo}>Objetivos</Text>
         <ScrollView>
           {objetivos?.map(objetivo => (
-            <CajaObjetivo key={objetivo.id} titulo={objetivo.des} recompesa={objetivo.puntos} porcentaje={objetivo.Usuarios[0]?.Objetivo_Usuario?.porcentaje} />
+            <CajaObjetivo key={objetivo.id} titulo={objetivo.des} recompesa={objetivo.puntos} porcentaje={objetivo.usuarios[0]?.Objetivo_Usuario?.porcentaje} />
           ))}
         </ScrollView>
       </View>
