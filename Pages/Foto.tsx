@@ -67,28 +67,7 @@ const tomarfoto = async () => {
     return <Text>No hay acceso a la camara</Text>
   }
 
-  /*const fabricapunto = (tipo: string, punto: any): APuntodeReciclaje | null => {
-    let tipopunto = null;
-    switch (tipo) {
-        case "Papel":
-            tipopunto = new PRPapelFactory();
-            break;
-        case "Plástico":
-            tipopunto = new PRPlasticoFactory();
-            break;
-        case "Metal":
-            tipopunto = new PRMetalFactory();
-            break;
-        case "Baterias":
-            tipopunto = new PRBateriasFactory();
-            break;
-        case "Ropa":
-            tipopunto = new PRRopaFactory();
-            break;
-    }
-
-    return tipopunto !== null ? tipopunto.crearpuntoderecilaje(punto.id, punto.latitud, punto.longitud, punto.lugar) : null;
-}*/
+  
 
 
   const handleBarCodeScanned = async ({ type, data }: { type: string; data: string }) => {
@@ -102,8 +81,7 @@ const tomarfoto = async () => {
       const usuarioObjeto = usuario? JSON.parse(usuario):null;
       const datos = await AsyncStorage.getItem('datos');
       const usuarioObjeto1 = datos? JSON.parse(datos):null;
-      //const punto=fabricapunto(parsedData.tipo,parsedData);
-      //const res=await punto!.puntorealizadoqr(lugarseleccionadodata.puntoqr,lugarseleccionadodata.cantidad,usuarioObjeto);
+      
       const res=await PuntorealizadoQR(lugarseleccionadodata.puntoqr,parsedData.latitud,parsedData.longitud,parsedData.lugar,parsedData.tipo,lugarseleccionadodata.cantidad,usuarioObjeto)
       if(!res.res){
         alert(res.mensaje);

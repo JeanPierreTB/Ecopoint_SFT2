@@ -48,8 +48,7 @@ function Chatpersonal() {
     const usuarios = chatamigo.enviados;
 
 
-    console.log(comentarios[0].id);
-    console.log(usuarios[0].nombre)
+    
 
    
     setusuarios(usuarios);

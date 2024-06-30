@@ -36,9 +36,7 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
     obtenerecompesa();
 
     
-    if(rol==="Cliente") recuperarobjetivos();
     
-    actualizarobjetivos();
     obtenerganador();
   },[]);
 
@@ -47,6 +45,10 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
     const usuario = await AsyncStorage.getItem('usuario');
     const usuarioObjeto = usuario? JSON.parse(usuario):null;
     const usuario1=await DatosUsuario(usuarioObjeto);
+    if(usuario1.rol==="Cliente"){
+      recuperarobjetivos();
+      actualizarobjetivos();
+    }
     setrol(usuario1.rol)
     const resultado=await UltimaRecompesa();
     const fechaInicioObtenida = new Date(resultado);
@@ -60,7 +62,6 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
       const usuario = await AsyncStorage.getItem('usuario');
       const usuarioObjeto = usuario? JSON.parse(usuario):null;
       const allobjetivos:any=await RecuperarObjetivos(usuarioObjeto);
-      console.log(allobjetivos);
       setobjetivos(allobjetivos);
     }catch(e){
       console.log('Ocurrio un error',e)
@@ -78,7 +79,6 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
     const usuarioObjeto = usuario? JSON.parse(usuario):null;
     const usuario1=await DatosUsuario(usuarioObjeto);
     setrol(usuario1.rol)
-    console.log("Final:"+usuario1.rol);
     const objetivosactualizados=await Actualizarobjetivoshoy(usuarioObjeto);
     if(objetivosactualizados.res){
       recuperarobjetivos();

@@ -64,8 +64,7 @@ const Comunidad: React.FC<any> = ({ navigation }: ComunidadProps) => {
       const allcoment=await RecuperarComentarios();
       const comentariosf = allcoment.comentarios;
       const usuariosf = allcoment.enviados;
-      console.log(comentariosf[0].id);
-      console.log(usuariosf[0].nombre);
+    
       setcometarios(comentariosf);
       setusuarios(usuariosf);
     } catch (e) {
