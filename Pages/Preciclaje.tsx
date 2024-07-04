@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
 import { RealizarPunto } from '../Funciones_Fetch/Puntodereciclaje/RealizarPunto';
+import { CategoriasPuntos } from '../Funciones_Fetch/Puntodereciclaje/CategoriasPuntos';
 
 
 
@@ -28,19 +29,21 @@ export default function Principal({navigation}:PreciclajeProps) {
 
   const recuperarpunto = async () => {
     try {
-      const storePunto = await AsyncStorage.getItem('punto');
+      
+      const storePunto:any = await AsyncStorage.getItem('punto');
+      const punto = JSON.parse(storePunto);
+      const categorias=await CategoriasPuntos();
+      const categoriaf = categorias.filter((categoria: any) => punto.idCategoria === categoria.id);
       if (storePunto) {
-        const punto = JSON.parse(storePunto);
         console.log(punto);
         const puntoderecilaje={
           id:punto.id,
           latitud:punto.latitud,
           longitud:punto.longitud,
           lugar:punto.lugar,
-          tipo:punto.tipo
+          tipo:categoriaf[0].tipo
         }
-        //const puntoderecilaje=crearpuntoderecilajefabrica(punto.tipo,punto);
-        settipo(punto.tipo);
+        settipo(categoriaf[0].tipo);
         setpunto(puntoderecilaje);
       }
     } catch (e) {
@@ -53,7 +56,6 @@ export default function Principal({navigation}:PreciclajeProps) {
     try{
         const usuario = await AsyncStorage.getItem('usuario');
         const usuarioObjeto = usuario? JSON.parse(usuario):null;
-        //console.log("se dio click",usuarioObjeto,punto?.id);
         console.log("Id usuario",usuarioObjeto);
         await RealizarPunto(usuarioObjeto,punto?.id,punto.tipo,punto,navigation);
         

@@ -106,9 +106,13 @@ function Cuenta({ navigation }: CuentaProps) {
         {rol==="Cliente"? 
         (<Text style={styles.titulo}>Mi cuenta</Text>):
         (
-        <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+        <View style={{flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
         <Text style={styles.titulo}>Mi cuenta</Text>
+        <TouchableOpacity style={styles.boton2} onPress={()=>navigation.navigate("AgregarCategoria")}>
+          <Text style={styles.botont}>Agregar Categoria</Text>
+        </TouchableOpacity>
         <Icon name="sign-out" size={30} color="red" onPress={() => navigation.navigate("sesion")} />
+        
         </View>
         
         )  
@@ -201,6 +205,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     color: 'green'
+  },boton2: {
+    width: 140,
+    padding: 10,
+    borderRadius: 20,
+    height:60,
+    
+  },
+  botont:{
+    color: 'red',
+    fontWeight: 'bold',
+    textAlign:'center',
+    fontSize: 15,
+
   }
 });
 

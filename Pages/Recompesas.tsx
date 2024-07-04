@@ -28,6 +28,7 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
   const [fechainicio, setFechaInicio] = useState(new Date());
   const [openInicio, setOpenInicio] = useState(false);
   const [imageUri, setImageUri] = useState<string | null>(null);
+  const [stock,setstock]=useState("");
 
 
 
@@ -97,6 +98,9 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
       await AgregarNotificacionamigo(usuarioObjeto,'Usted ha ganado el premio de la semana',0,usuarioObjeto1.nombre,usuarioObjeto1.foto)
       setmensaje(ganador.mensaje)
     }
+    obtenerecompesa();
+
+
     
     
   }
@@ -143,13 +147,14 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
   console.log("Puntaje: " + puntaje);
   console.log("Imagen: " + imageUri);
 
-  const res=await AgregarRecompesa(imageUri,descripcion,formattedFechaInicio,formattedFechaFin,parseInt(puntaje));
+  const res=await AgregarRecompesa(imageUri,descripcion,formattedFechaInicio,formattedFechaFin,parseInt(puntaje),parseInt(stock));
   if(res){
     alert("Recompesa agregada con exito");
     setImageUri(null);
     setpuntaje("");
     setFechaInicio(new Date());
     setdescripcion("");
+    setstock("");
   }
 
   else if(!res){
@@ -180,6 +185,7 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
               <Text style={styles.texto}>Imagen no disponible</Text>
             )}
             <Text style={styles.texto}>{mensaje === "" ? recompesasem?.des : mensaje}</Text>
+            <Text style={styles.texto}>{recompesasem?.stock===0 ? "Stock agotado":"Stock:"+recompesasem?.stock}</Text>
           </View>
         )}
         <Text style={styles.titulo}>Objetivos</Text>
@@ -225,6 +231,14 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
             </View>
 
             <View>
+                <Text style={styles.textoboton}>Stock</Text>
+                <TextInput style={styles.boton} value={stock} onChange={(e)=>setstock(e.nativeEvent.text)}/>
+
+            </View>
+
+
+
+            <View>
                 <Text style={styles.textoboton}>Imagen</Text>
                 <TouchableOpacity style={styles.boton2} onPress={handleChoosePhoto}>
                   <Text style={styles.textob}>Seleccionar imagen</Text>
@@ -236,7 +250,7 @@ const Recompesas: React.FC<any> = ({ navigation }:RecompensasProps) => {
                   />
                 )}
             </View>
-            <TouchableOpacity style={[styles.boton2,{marginTop:80}]} onPress={()=>handleclik()} >
+            <TouchableOpacity style={styles.boton2} onPress={()=>handleclik()} >
               <Text style={styles.textob}>Agregar Recompesa</Text>
             </TouchableOpacity>
           </View>
@@ -289,7 +303,7 @@ const styles=StyleSheet.create({
     },
     containera:{
       flex:1,
-      marginTop:40,
+      marginTop:20,
       alignItems:'center',
       gap:20
 

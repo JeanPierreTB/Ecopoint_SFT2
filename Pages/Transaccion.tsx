@@ -7,6 +7,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { DatosUsuario } from '../Funciones_Fetch/Usuario/DatosUsuario';
 import { Obtenerpuntosrealizar } from '../Funciones_Fetch/Puntodereciclaje/Obtenerpuntosrealizar';
 import { PuntoRealizado } from '../Funciones_Fetch/Puntodereciclaje/PuntoRealizado';
+import { CategoriasPuntos } from '../Funciones_Fetch/Puntodereciclaje/CategoriasPuntos';
 
 
 
@@ -18,10 +19,10 @@ const Transaccion: React.FC<any> = ({ navigation }:TransaccionProps) => {
   
   
 
-  const handlePickerChange = (itemValue: string) => {
+  const handlePickerChange = async (itemValue: string) => {
     const selectedTransaccion = transacciones?.find((transaccion) => transaccion.lugar === itemValue);
     setSelectedOption(itemValue);
-    setSelectedPuntaje(selectedTransaccion?.tipo || '');
+    setSelectedPuntaje(selectedTransaccion?.categoria.tipo || '');
   };
 
   const recuperarTransaccion = async () => {

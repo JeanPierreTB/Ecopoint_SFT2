@@ -18,6 +18,7 @@ import Misamigos from './Pages/Misamigos';
 import Notificaciones from './Pages/Notificaciones';
 import Chatpersonal from './Pages/ChatPersonal';
 import AgregarPunto from './Pages/AgregarPunto';
+import AgregarCategoria from './Pages/AgregarCategoria';
 
 
 
@@ -74,6 +75,18 @@ const CargaInicial: React.FC<{ navigation: any }> = ({ navigation }) => {
         <Stack.Screen 
           name='Preciclaje'
           component={Preciclaje}
+          options={{
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'rgba(0,0,0,0)',
+              borderBottomWidth: 0,
+            },
+          }}
+        
+        />
+        <Stack.Screen 
+          name='AgregarCategoria'
+          component={AgregarCategoria}
           options={{
             headerTitle: '',
             headerStyle: {

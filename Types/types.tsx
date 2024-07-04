@@ -23,6 +23,7 @@ export type RootStackParamList = {
     notificaciones:undefined
     chatpersonal:undefined
     agregarpunto:undefined
+    AgregarCategoria:undefined
   };
 
 

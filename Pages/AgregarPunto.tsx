@@ -5,6 +5,7 @@ import { Picker } from '@react-native-picker/picker';
 import { AgregarPuntoE } from "../Funciones_Fetch/Puntodereciclaje/AgregarpuntoE";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Types/types';
+import { CategoriasPuntos } from "../Funciones_Fetch/Puntodereciclaje/CategoriasPuntos";
 
 type AgregarPuntoProps = {
   navigation: StackNavigationProp<RootStackParamList, "agregarpunto">;
@@ -17,9 +18,11 @@ export default function AgregarPunto({ navigation }: AgregarPuntoProps) {
   const [longitud, setLongitud] = useState('');
   const [nombre, setNombre] = useState("");
   const [valor, setValor] = useState('-'); 
+  const [categorias,setcategorias]=useState<any>([]);
 
   useEffect(() => {
     datospuntos();
+    obtenercategorias();
   }, []);
 
   const datospuntos = async () => {
@@ -29,6 +32,11 @@ export default function AgregarPunto({ navigation }: AgregarPuntoProps) {
     setLongitud(String(puntofinal.longitude)); 
     setNombre(puntofinal.nombre);
   };
+
+  const obtenercategorias=async()=>{
+    const categorias=await CategoriasPuntos();
+    setcategorias(categorias);
+  }
 
   const handleclik=async ()=>{
     if(valor==="-"){
@@ -84,11 +92,10 @@ export default function AgregarPunto({ navigation }: AgregarPuntoProps) {
           }
         >
           <Picker.Item label="-" value="-"/>
-          <Picker.Item label="Baterias" value="Baterias" />
-          <Picker.Item label="Metal" value="Metal" />
-          <Picker.Item label="Papel" value="Papel" />
-          <Picker.Item label="Plástico" value="Plástico" />
-          <Picker.Item label="Ropa" value="Ropa" />
+          {categorias?.map((categoria:any)=>(
+            <Picker.Item key ={categoria.id} label={categoria.tipo} value={categoria.tipo} />
+          ))}
+         
         </Picker>
           
           

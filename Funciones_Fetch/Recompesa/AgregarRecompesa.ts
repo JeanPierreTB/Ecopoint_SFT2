@@ -1,5 +1,5 @@
 import { URL2 } from "../../URL/URL";
-export async function AgregarRecompesa(imagen:string|null,des:string,fechainicio:string,fechafin:string,puntaje:number) {
+export async function AgregarRecompesa(imagen:string|null,des:string,fechainicio:string,fechafin:string,puntaje:number,stock:number) {
     const response=await fetch(`${URL2}agregar-recompesa`,{
         method: 'POST',
             headers: {
@@ -10,7 +10,8 @@ export async function AgregarRecompesa(imagen:string|null,des:string,fechainicio
                des:des,
                fechainicio:fechainicio,
                fechafin:fechafin,
-               puntaje:puntaje
+               puntaje:puntaje,
+               stock:stock
                
             }),
     })

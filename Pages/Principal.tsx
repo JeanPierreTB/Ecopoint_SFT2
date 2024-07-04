@@ -13,6 +13,7 @@ import { VisualizarPuntos } from "../Funciones_Fetch/Puntodereciclaje/Visualizar
 import { DatosUsuario } from "../Funciones_Fetch/Usuario/DatosUsuario";
 import { Obtenerpuntosrealizar } from "../Funciones_Fetch/Puntodereciclaje/Obtenerpuntosrealizar";
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
+import { CategoriasPuntos } from "../Funciones_Fetch/Puntodereciclaje/CategoriasPuntos";
 
 
 type PrincipalProps = {
@@ -32,6 +33,7 @@ export default function Principal({ navigation }: PrincipalProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [rol,setrol]=useState("Cliente");
   const [searchTerm, setSearchTerm] = useState("");
+  const [categorias,setcategorias]=useState([]);
 
 
 
@@ -93,8 +95,14 @@ export default function Principal({ navigation }: PrincipalProps) {
       }
     };
 
+    const obtenercategorias=async()=>{
+      const res=await CategoriasPuntos();
+      setcategorias(res);
+    }
+
     
     if (isFocused) { 
+      obtenercategorias();
       fetchUserData();
       getLocationPermission();
       fetchData();
@@ -104,6 +112,8 @@ export default function Principal({ navigation }: PrincipalProps) {
 
     
   }, [isFocused,selectedCategory]);
+
+  
 
   const handlePunto = async (punto: any) => {
     try {
@@ -154,10 +164,10 @@ export default function Principal({ navigation }: PrincipalProps) {
   };
 
   const filteredPoints = selectedCategory
-    ? puntosrec.filter(punto => punto.tipo === selectedCategory) 
+    ? puntosrec.filter(punto => punto.categoria.tipo === selectedCategory) 
     : puntosrec;
   const filteredArPoints = selectedCategory
-    ? puntosar.filter(punto => punto.tipo === selectedCategory)
+    ? puntosar.filter(punto => punto.categoria.tipo === selectedCategory)
     : puntosar;
 
 
@@ -175,11 +185,11 @@ export default function Principal({ navigation }: PrincipalProps) {
             onValueChange={handlePickerChange}
           >
             <Picker.Item label="-" value="" />
-            <Picker.Item label="Papel" value="Papel" />
-            <Picker.Item label="Plástico" value="Plástico" />
-            <Picker.Item label="Metal" value="Metal" />
-            <Picker.Item label="Baterias" value="Baterias" />
-            <Picker.Item label="Ropa" value="Ropa" />
+            {categorias.map((categoria:any)=>(
+              <Picker.Item key={categoria.id} label={categoria.tipo} value={categoria.tipo} />
+
+            ))}
+            
           </Picker>
           
           
@@ -213,6 +223,7 @@ export default function Principal({ navigation }: PrincipalProps) {
           }}
         
         />
+        
 
         </View>
         ):null}
@@ -319,4 +330,17 @@ const styles = StyleSheet.create({
     width: "100%",
     zIndex: 100,
   },
+  boton2: {
+    backgroundColor: 'lightgreen',
+    width: 140,
+    padding: 10,
+    borderRadius: 20,
+    height:60,
+    
+  },
+  botont:{
+    marginTop:10,
+    textAlign:'center',
+    fontWeight:'bold'
+  }
 });
