@@ -1,5 +1,5 @@
 import { URL2 } from "../../URL/URL";
-export async function AgregarCategoriaF(tipo:string,valor:number) {
+export async function AgregarCategoriaF(tipo:string,valor:number,puntuacion:string) {
     try{
         const response = await fetch(`${URL2}agregar-categoria`, {
             method: 'POST',
@@ -8,7 +8,8 @@ export async function AgregarCategoriaF(tipo:string,valor:number) {
         },
             body: JSON.stringify({
                 tipo:tipo,
-                valor:valor
+                valor:valor,
+                puntuacion:puntuacion
             }),
             })
           const data = await response.json();

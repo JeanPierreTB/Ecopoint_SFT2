@@ -9,6 +9,7 @@ import { RealizarPunto } from '../Funciones_Fetch/Puntodereciclaje/RealizarPunto
 import { CategoriasPuntos } from '../Funciones_Fetch/Puntodereciclaje/CategoriasPuntos';
 import { AgregarCategoriaF } from '../Funciones_Fetch/Puntodereciclaje/AgregarCategoriaF';
 
+import { Picker } from '@react-native-picker/picker';
 
 
 type AgregarCategoriaProps = {
@@ -19,6 +20,7 @@ export default function AgregarCategoria({navigation}:AgregarCategoriaProps) {
 
   const[nombre,setnombre]=useState("");
   const[valor,setvalor]=useState("");
+  const[tipo,settipo]=useState("");
 
   
 
@@ -29,10 +31,14 @@ export default function AgregarCategoria({navigation}:AgregarCategoriaProps) {
 
 
   const handleclik=async ()=>{
-    const res=await AgregarCategoriaF(nombre,parseInt(valor));
+    if(tipo==="-"){
+        return alert("Seleccione un tipo de puntuacion");
+    }
+    const res=await AgregarCategoriaF(nombre,parseInt(valor),tipo);
     if(res){
         setnombre("");
         setvalor("");
+        settipo("");
         alert("Categoria agreada con exito")
         return navigation.navigate("cuenta");
     }
@@ -54,6 +60,28 @@ export default function AgregarCategoria({navigation}:AgregarCategoriaProps) {
             <View>
                 <Text style={styles.texto}>Valor de la categoria</Text>
                 <TextInput style={styles.input} value={valor} onChange={(e)=>setvalor(e.nativeEvent.text)}/>
+
+
+            </View>
+
+            <View>
+                <Text style={styles.texto}>Tipo de puntuacion</Text>
+                <Picker
+                    style={styles.pick}
+                    selectedValue={tipo}
+                    onValueChange={(itemValue:any, itemIndex:any) =>
+                        settipo(itemValue)
+                      }
+            
+                >
+                <Picker.Item label="-" value="-"/>
+                <Picker.Item label="Kilo" value="Kilo"/>
+                <Picker.Item label="Cantidad" value="Cantidad"/>
+
+
+
+
+                </Picker>
 
 
             </View>
@@ -114,7 +142,12 @@ const styles=StyleSheet.create({
     texto2:{
         textAlign:'center',
         fontSize:20
-    }
+    },
+    pick: {
+        width: '100%',
+        backgroundColor: 'lightgreen',   
+    
+      }
 
 
 

@@ -16,6 +16,7 @@ const Transaccion: React.FC<any> = ({ navigation }:TransaccionProps) => {
   const [transacciones, setTransacciones] = useState<any[] | null>([]);
   const [selectedPuntaje, setSelectedPuntaje] = useState('');
   const [cantidad,setcantidad]=useState('0');
+  const [tipo,settipo]=useState("");
   
   
 
@@ -23,6 +24,8 @@ const Transaccion: React.FC<any> = ({ navigation }:TransaccionProps) => {
     const selectedTransaccion = transacciones?.find((transaccion) => transaccion.lugar === itemValue);
     setSelectedOption(itemValue);
     setSelectedPuntaje(selectedTransaccion?.categoria.tipo || '');
+    console.log("Categoria:"+selectedTransaccion.categoria)
+    settipo(selectedTransaccion?.categoria.puntuacion || '');
   };
 
   const recuperarTransaccion = async () => {
@@ -128,7 +131,7 @@ const Transaccion: React.FC<any> = ({ navigation }:TransaccionProps) => {
           <TextInput value={selectedPuntaje} style={styles.input} />
         </View>
         <View>
-        <Text style={styles.des}>Cantidad</Text>
+        <Text style={styles.des}>{tipo===""? "Categoria no definida":tipo}</Text>
         
          <TextInput style={styles.input} keyboardType="numeric" value={cantidad} onChange={(e)=>setcantidad(e.nativeEvent.text)}/>
 
